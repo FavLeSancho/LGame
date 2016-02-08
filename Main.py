@@ -53,7 +53,7 @@ root.resizable(width=FALSE, height=FALSE) # On dit que la fenêtre ne peut pas �
 #Fenêtre du Chat
 Chat = Text(root, bd=0, bg="white", height="8", width="50", font="Arial",) #Customisation de la fenêtre de chat
 Chat.insert(END, "Bienvenue à cette partie de Loup Garous !\n") #On insère du texte
-Chat.config(state=DISABLED) #Une fenêtre où ne peut pas être, sinon wtf
+Chat.config(state=DISABLED) #Une fenêtre où ne peut pas écrire, sinon wtf
 
 #Barre de Scrolling
 scrollbar = Scrollbar(root, command=Chat.yview)
