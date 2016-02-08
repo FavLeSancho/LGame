@@ -1,4 +1,4 @@
-#Projet LG by Fav/user2/user3
+#Projet LG by Fav/Shirotani/user3
 from tkinter import *
 
 def LoadEntry(Chat, EntryText):
