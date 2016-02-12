@@ -28,7 +28,8 @@ def ClicAction():
     #On envoie le texte dans le fonction Filtration
     EntryText = Filtration(ChatBox.get("0.0",END))
     #Puis on l'envoie dans la fonction FinalMessage, pour ressortir l'effet stylisé, avec le Vous: "message"
-    FinalMessage(Chat, EntryText)
+    #FinalMessage(Chat, EntryText)
+    Command(EntryText)
 
     #Scroll du message
     Chat.yview(END)
@@ -43,6 +44,21 @@ def ReleaseEnter(event):
 def StopChat(event):
 	#Permet de désactiver le chat quand on appuie sur ENTER (pour eviter de sauter un espace en écrivant)
 	ChatBox.config(state=DISABLED)
+
+def Command(EntryText):
+    if EntryText != '':
+        if EntryText[0] == '.':
+            #Début des commandes
+            if EntryText[:6] == '.vote ':#Commande .vote
+                EntryText = EntryText.replace(".vote ", '')
+                
+            else:
+                EntryText = FinalMessage(Chat, EntryText)
+
+        else:
+            EntryText = FinalMessage(Chat, EntryText)
+                
+
 
 
 root = Tk() #On définit notre fenêtre
