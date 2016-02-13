@@ -46,17 +46,17 @@ def StopChat(event):
 	ChatBox.config(state=DISABLED)
 
 def Command(EntryText):
-    if EntryText != '':
-        if EntryText[0] == '.':
+    if EntryText != '': #Si le texte n'est vide
+        if EntryText[0] == '.': #Si le texte commence par un point, on le considère comme une commande (si elle existe)
             #Début des commandes
             if EntryText[:6] == '.vote ':#Commande .vote
-                EntryText = EntryText.replace(".vote ", '')
+                EntryText = EntryText.replace(".vote ", '')#On enlève le '.vote ' pour ne reccuperer que le pseudo
                 
             else:
-                EntryText = FinalMessage(Chat, EntryText)
+                EntryText = FinalMessage(Chat, EntryText) #Si ce n'est pas une commande connue, on envoie le message tel quel
 
         else:
-            EntryText = FinalMessage(Chat, EntryText)
+            EntryText = FinalMessage(Chat, EntryText) # Si le message ne commence pas par un point, on l'envoie normalement
                 
 
 
