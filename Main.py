@@ -62,10 +62,10 @@ def Command(EntryText):
                 EntryText = EntryText.replace(".vote ", '')#On enlève le '.vote ' pour ne reccuperer que le pseudo
                 
             else:
-                EntryText = FinalMessage(Chat, EntryText) #Si ce n'est pas une commande connue, on envoie le message tel quel
+                FinalMessage(Chat, EntryText) #Si ce n'est pas une commande connue, on envoie le message tel quel
 
         else:
-            EntryText = FinalMessage(Chat, EntryText) # Si le message ne commence pas par un point, on l'envoie normalement
+            FinalMessage(Chat, EntryText) # Si le message ne commence pas par un point, on l'envoie normalement
                 
 
 
