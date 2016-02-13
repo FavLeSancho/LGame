@@ -3,7 +3,7 @@ A faire :
 
 Chat :
 -Gestion du Narrateur
--Gestion des commandes générales (.def/.vote)
+[EN COURS] -Gestion des commandes générales (.def/.vote)
 -Gestion des commandes appliquées aux rôles (.kill / .death≠.save / .love / .revenge)
 
 
@@ -15,7 +15,7 @@ Interface :
 
 
 Programme : 
--Gestion de l'algorithme d'attribution d'un rôle
+[EN COURS] -Gestion de l'algorithme d'attribution d'un rôle
 -Gestion des IA des 'BotsJoueurs' (def, vote, actions pendant la nuit)
 -Gestion des timers (vote / nuit / jour / actions des joueurs)
 -Gestion du cycle Jour/Nuit (Nuit = actions des joueurs / Jour = vote, def)
