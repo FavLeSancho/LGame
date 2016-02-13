@@ -1,5 +1,7 @@
 #Projet LG by Fav/Shirotani/user3
 from tkinter import *
+from random import *
+import random
 
 def FinalMessage(Chat, EntryText):
     if EntryText != '':
@@ -44,6 +46,13 @@ def ReleaseEnter(event):
 def StopChat(event):
 	#Permet de désactiver le chat quand on appuie sur ENTER (pour eviter de sauter un espace en écrivant)
 	ChatBox.config(state=DISABLED)
+	
+	
+	
+#---------------------------------------------------#
+#---------------GESTION DES COMMANDES---------------#
+#---------------------------------------------------#
+
 
 def Command(EntryText):
     if EntryText != '': #Si le texte n'est vide
@@ -59,6 +68,10 @@ def Command(EntryText):
             EntryText = FinalMessage(Chat, EntryText) # Si le message ne commence pas par un point, on l'envoie normalement
                 
 
+
+#---------------------------------------------------#
+#----------------GESTION DU GRAPHISME---------------#
+#---------------------------------------------------#
 
 
 root = Tk() #On définit notre fenêtre
@@ -90,3 +103,26 @@ scrollbar.place(x=376,y=6, height=386) #La Barre de Scroll
 Chat.place(x=6,y=6, height=386, width=370) #Le cadre du Chat
 ChatBox.place(x=128, y=401, height=50, width=500) #Le cadre de la boite à message (lol)
 BoutonEnvoi.place(x=6, y=401, height=50) #Le cadre du bouton
+
+
+
+#---------------------------------------------------#
+#----------------GESTION DES PLAYERS----------------#
+#---------------------------------------------------#
+
+PlayerList = ['Player','Ordi1','Ordi2','Ordi3','Ordi4']
+RoleList = ['LoupGarou','Cupidon','Sorciere','Chasseur']
+Joueur = random.choice(RoleList)
+RoleList.remove(Joueur)
+
+Ordi1 = random.choice(RoleList)
+RoleList.remove(Ordi1)
+
+Ordi2 = random.choice(RoleList)
+RoleList.remove(Ordi2)
+
+Ordi3 = random.choice(RoleList)
+RoleList.remove(Ordi3)
+
+Ordi4 = random.choice(RoleList)
+RoleList.remove(Ordi4)
