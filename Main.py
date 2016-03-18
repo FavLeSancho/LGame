@@ -4,6 +4,39 @@ from tkinter import *
 from random import *
 import random
 
+def Main():
+    BoutonMain.destroy() #Quand on clique, le bouton disparait
+
+    Joueur = random.choice(RoleList)
+    RoleList.remove(Joueur)
+    #------------#
+    Ordi1 = random.choice(RoleList)
+    RoleList.remove(Ordi1)
+    #------------#
+    Ordi2 = random.choice(RoleList)
+    RoleList.remove(Ordi2)
+    #------------#
+    Ordi3 = random.choice(RoleList)
+    RoleList.remove(Ordi3)
+    #------------#
+    Ordi4 = random.choice(RoleList)
+    RoleList.remove(Ordi4)
+
+    if Joueur == 'LoupGarou':
+        tamere.create_image(70, 70, image=ImgLoupGarou)
+    elif Joueur == 'Chasseur':
+        ''
+    elif Joueur == 'Cupidon':
+        ''
+    else:
+        ''
+        
+
+    
+
+    
+
+
 def FinalMessage(Chat, EntryText):
     if EntryText != '':
         Chat.config(state=NORMAL)
@@ -45,28 +78,12 @@ def StopChat(event):
     #Permet de désactiver le chat quand on appuie sur ENTER (pour eviter de sauter un espace en écrivant)
     ChatBox.config(state=DISABLED)
 
-def StartTimer():
-    BoutonTimer.destroy() #Quand on clique, le bouton disparait
 
 
 
 #---------------------------------------------------#
 #---------------GESTION DES COMMANDES---------------#
 #---------------------------------------------------#
-
-def Vote(Player):
-    global JoueurIsVoted,Ordi1IsVoted,Ordi2IsVoted,Ordi3IsVoted,Ordi4IsVoted
-    for Player in PlayerList:
-        if Player == 'Joueur':
-            JoueurIsVoted += 1
-        if Player == 'Ordi1':
-            Ordi1IsVoted += 1
-        if Player == 'Ordi2':
-            Ordi2IsVoted += 1
-        if Player == 'Ordi3':
-            Ordi3IsVoted += 1
-        if Player == 'Ordi4':
-            Ordi4IsVoted += 1
 
 def Command(EntryText):
     if EntryText != None: #Si le texte n'est vide
@@ -99,6 +116,21 @@ def Command(EntryText):
             FinalMessage(Chat, EntryText) # Si le message ne commence pas par un point, on l'envoie normalement
 
 
+
+def Vote(Player):
+    global JoueurIsVoted,Ordi1IsVoted,Ordi2IsVoted,Ordi3IsVoted,Ordi4IsVoted
+    for Player in PlayerList:
+        if Player == 'Joueur':
+            JoueurIsVoted += 1
+        if Player == 'Ordi1':
+            Ordi1IsVoted += 1
+        if Player == 'Ordi2':
+            Ordi2IsVoted += 1
+        if Player == 'Ordi3':
+            Ordi3IsVoted += 1
+        if Player == 'Ordi4':
+            Ordi4IsVoted += 1
+
 #---------------------------------------------------#
 #----------------GESTION DU GRAPHISME---------------#
 #---------------------------------------------------#
@@ -113,6 +145,8 @@ Chat = Text(root, bd=0, bg="white", height="8", width="50", font="Arial",) #Cust
 Chat.insert(END, "Bienvenue à cette partie de Loup Garous !\n") #On insère du texte
 Chat.config(state=DISABLED) #Une fenêtre où ne peut pas écrire, sinon wtf
 
+tamere = Canvas(root, width=200, height=200)
+
 #Barre de Scrolling
 scrollbar = Scrollbar(root, command=Chat.yview)
 Chat['yscrollcommand'] = scrollbar.set
@@ -123,9 +157,9 @@ bd=0, bg="#FFBF00", activebackground="#FACC2E", #Customisation du Bouton
 command=ClicAction) #Quand on clique, ça lance la fonction "ClicAction"
 
 #Le Bouton "Lancer la partie"
-BoutonTimer = Button(root, font=30, text="Lancer la partie", width='12', height='5',
+BoutonMain = Button(root, font=30, text="Lancer la partie", width='12', height='5',
 bd=0, bg="#FFBF00", activebackground="#FACC2E",
-command=StartTimer)
+command=Main)
 
 #L'espace où taper son message
 ChatBox = Text(root, bd=0, bg="white",width='29', height='5', font="Arial") # Customisation de la ChatBox (Taille/police/fond)
@@ -137,7 +171,15 @@ scrollbar.place(x=376,y=6, height=386) #La Barre de Scroll
 Chat.place(x=6,y=6, height=386, width=370) #Le cadre du Chat
 ChatBox.place(x=128, y=401, height=50, width=500) #Le cadre de la boite à message (lol)
 BoutonEnvoi.place(x=6, y=401, height=50) #Le cadre du bouton
-BoutonTimer.place(x=650, y=401, height=50 ) #Le cadre du bouton
+BoutonMain.place(x=650, y=401, height=50 ) #Le cadre du bouton
+tamere.place(x=650, y=10)
+
+
+#Images
+ImgLoupGarou = PhotoImage(file ='Lg.gif')
+ImgCupidon = PhotoImage(file ='')
+ImgChasseur = PhotoImage(file ='')
+ImgSorciere = PhotoImage(file ='')
 
 
 #---------------------------------------------------#
@@ -148,19 +190,9 @@ BoutonTimer.place(x=650, y=401, height=50 ) #Le cadre du bouton
 
 PlayerList = ['Player','Ordi1','Ordi2','Ordi3','Ordi4']
 RoleList = ['LoupGarou','LoupGarou','Cupidon','Sorciere','Chasseur']
-
-Joueur = random.choice(RoleList)
-RoleList.remove(Joueur)
 JoueurIsVoted = 0
-Ordi1 = random.choice(RoleList)
-RoleList.remove(Ordi1)
 Ordi1IsVoted = 0
-Ordi2 = random.choice(RoleList)
-RoleList.remove(Ordi2)
 Ordi2IsVoted = 0
-Ordi3 = random.choice(RoleList)
-RoleList.remove(Ordi3)
 Ordi3IsVoted = 0
-Ordi4 = random.choice(RoleList)
-RoleList.remove(Ordi4)
 Ordi4IsVoted = 0
+
