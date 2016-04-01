@@ -5,7 +5,7 @@ from random import *
 import random
 
 def Main():
-    BoutonMain.destroy() #Quand on clique, le bouton disparait
+    Launcher.destroy() #Quand on clique, le bouton disparait
 
     Joueur = random.choice(RoleList)
     RoleList.remove(Joueur)
@@ -23,7 +23,7 @@ def Main():
     RoleList.remove(Ordi4)
 
     if Joueur == 'LoupGarou':
-        tamere.create_image(70, 70, image=ImgLoupGarou)
+        PictureBox.create_image(70, 70, image=ImgLoupGarou)
     elif Joueur == 'Chasseur':
         ''
     elif Joueur == 'Cupidon':
@@ -48,6 +48,8 @@ def FinalMessage(Chat, EntryText):
             Chat.config(state=DISABLED)
             Chat.yview(END)
 
+
+#A supprimer
 def Filtration(EntryText): #Permet de filtrer les messages (EntryText)
     DoneFilter = '' #On initialise la variable qu'on va renvoyer
     for i in range(len(EntryText)-1,-1,-1): #On va regarder dans notre message (step = -1)
@@ -145,7 +147,7 @@ Chat = Text(root, bd=0, bg="white", height="8", width="50", font="Arial",) #Cust
 Chat.insert(END, "Bienvenue à cette partie de Loup Garous !\n") #On insère du texte
 Chat.config(state=DISABLED) #Une fenêtre où ne peut pas écrire, sinon wtf
 
-tamere = Canvas(root, width=200, height=200)
+PictureBox = Canvas(root, width=200, height=200)
 
 #Barre de Scrolling
 scrollbar = Scrollbar(root, command=Chat.yview)
@@ -157,7 +159,7 @@ bd=0, bg="#FFBF00", activebackground="#FACC2E", #Customisation du Bouton
 command=ClicAction) #Quand on clique, ça lance la fonction "ClicAction"
 
 #Le Bouton "Lancer la partie"
-BoutonMain = Button(root, font=30, text="Lancer la partie", width='12', height='5',
+Launcher = Button(root, font=30, text="Lancer la partie", width='12', height='5',
 bd=0, bg="#FFBF00", activebackground="#FACC2E",
 command=Main)
 
@@ -171,12 +173,12 @@ scrollbar.place(x=376,y=6, height=386) #La Barre de Scroll
 Chat.place(x=6,y=6, height=386, width=370) #Le cadre du Chat
 ChatBox.place(x=128, y=401, height=50, width=500) #Le cadre de la boite à message (lol)
 BoutonEnvoi.place(x=6, y=401, height=50) #Le cadre du bouton
-BoutonMain.place(x=650, y=401, height=50 ) #Le cadre du bouton
-tamere.place(x=650, y=10)
+Launcher.place(x=650, y=401, height=50 ) #Le cadre du bouton
+PictureBox.place(x=650, y=10)
 
 
 #Images
-ImgLoupGarou = PhotoImage(file ='Lg.gif')
+ImgLoupGarou = PhotoImage(file ='')
 ImgCupidon = PhotoImage(file ='')
 ImgChasseur = PhotoImage(file ='')
 ImgSorciere = PhotoImage(file ='')
@@ -195,4 +197,3 @@ Ordi1IsVoted = 0
 Ordi2IsVoted = 0
 Ordi3IsVoted = 0
 Ordi4IsVoted = 0
-
