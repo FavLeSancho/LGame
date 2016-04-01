@@ -49,7 +49,7 @@ def FinalMessage(Chat, EntryText):
             Chat.yview(END)
 
 
-#A supprimer
+#A simplifier
 def Filtration(EntryText): #Permet de filtrer les messages (EntryText)
     DoneFilter = '' #On initialise la variable qu'on va renvoyer
     for i in range(len(EntryText)-1,-1,-1): #On va regarder dans notre message (step = -1)
@@ -143,11 +143,15 @@ root.geometry("800x460") # On définit sa taille
 root.resizable(width=FALSE, height=FALSE) # On dit que la fenêtre ne peut pas être redimensionnée
 
 #Fenêtre du Chat
-Chat = Text(root, bd=0, bg="white", height="8", width="50", font="Arial",) #Customisation de la fenêtre de chat
+Chat = Text(root, bd=0, bg="white", height="8", width="50", font="Arial") #Customisation de la fenêtre de chat
 Chat.insert(END, "Bienvenue à cette partie de Loup Garous !\n") #On insère du texte
 Chat.config(state=DISABLED) #Une fenêtre où ne peut pas écrire, sinon wtf
 
+#Fenetre Image
 PictureBox = Canvas(root, width=200, height=200)
+
+#Fenetre Joueurs
+PlayerBox = Canvas(root, bd=0, height="13", width = "25")
 
 #Barre de Scrolling
 scrollbar = Scrollbar(root, command=Chat.yview)
@@ -175,6 +179,7 @@ ChatBox.place(x=128, y=401, height=50, width=500) #Le cadre de la boite à messa
 BoutonEnvoi.place(x=6, y=401, height=50) #Le cadre du bouton
 Launcher.place(x=650, y=401, height=50 ) #Le cadre du bouton
 PictureBox.place(x=650, y=10)
+PlayerBox.place(x= 400, y= 150)
 
 
 #Images
