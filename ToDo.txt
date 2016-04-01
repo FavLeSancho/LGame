@@ -10,12 +10,12 @@ Chat :
 Interface :
 -Affichage des personnes connectées, et des joueurs morts
 -Affichage des rôles possibles, ainsi que leur explication
--Affichage du rôle du joueur (en haut à droite)
+ [En Cours] -Affichage du rôle du joueur (en haut à droite)
 -Affichage du cycle Jour/Nuit (Jour = blanc / Nuit = Noir ?)
 
 
 Programme : 
-[EN COURS] -Gestion de l'algorithme d'attribution d'un rôle
+[FAIT] -Gestion de l'algorithme d'attribution d'un rôle
 -Gestion des IA des 'BotsJoueurs' (def, vote, actions pendant la nuit)
 -Gestion des timers (vote / nuit / jour / actions des joueurs)
 -Gestion du cycle Jour/Nuit (Nuit = actions des joueurs / Jour = vote, def)
