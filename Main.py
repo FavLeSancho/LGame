@@ -2,6 +2,7 @@
 
 from tkinter import *
 from random import *
+from time import *
 import random
 
 def Main():
@@ -21,19 +22,57 @@ def Main():
     #------------#
     Ordi4 = random.choice(RoleList)
     RoleList.remove(Ordi4)
+    
 
     if Joueur == 'LoupGarou':
-        PictureBox.create_image(70, 70, image=ImgLoupGarou)
+        PictureBox.create_image(75, 75, image=ImgLoupGarou)
     elif Joueur == 'Chasseur':
-        ''
+        PictureBox.create_image(75, 75, image=ImgChasseur)
     elif Joueur == 'Cupidon':
-        ''
+        PictureBox.create_image(75, 75, image=ImgCupidon)
     else:
-        ''
+        PictureBox.create_image(75, 75, image=ImgSorciere)
+
+
+    TimerNuit()
+
+    if isNuit == True:
+        BackGround.create_image(400, 230, image=FondNuit)
+    elif isJour == True:
+        BackGround.create_image(400, 230, image=FondJour)
+        
+    
         
 
     
+def TimerNuit():
+    global secNuit, isNuit
+    if secNuit != 0:
+        isNuit = True
+        secNuit -= 1
+        TimerBox['text'] = 'Nuit :\n' + 'Temps restant : ' + str(secNuit)
+        TimerBox.after(1000, TimerNuit)
+    else:
+        TimerBox['text'] = ''
+        isNuit = False
+        TimerJour()
+        secNuit += 60
+        
 
+def TimerJour():
+    global secJour, isJour
+    if secJour != 0:
+        isJour = True
+        secJour -= 1
+        TimerBox['text'] = 'Jour :\n' +'Temps restant : ' + str(secJour)
+        TimerBox.after(1000, TimerJour)
+    else:
+        TimerBox['text'] = ''
+        isJour = True
+        TimerNuit()
+        secJour += 60
+        
+        
     
 
 
@@ -93,6 +132,8 @@ def Command(EntryText):
             #Début des commandes#
             
             if EntryText[:6] == '.vote ':#Commande .vote
+                if isNuit == True:
+                    EntryText = ''
                 EntryText = EntryText.replace("\n", '') #On enlève le retour à la ligne (fixage de bugs)
                 EntryText = EntryText.replace(".vote ", '') #On enlève le '.vote ' pour ne reccuperer que le pseudo
                 if EntryText in PlayerList: #Si le pseudo fait partie de la liste de Joueurs
@@ -113,9 +154,15 @@ def Command(EntryText):
                 else: #Sinon, on ne revoie rien
                     EntryText = ''
             else:
-                FinalMessage(Chat, EntryText) #Si ce n'est pas une commande connue, on envoie le message tel quel
+                if isNuit == True:
+                    EntryText = ''
+                else:
+                    FinalMessage(Chat, EntryText) #Si ce n'est pas une commande connue, on envoie le message tel quel
         else:
-            FinalMessage(Chat, EntryText) # Si le message ne commence pas par un point, on l'envoie normalement
+            if isNuit == True:
+                EntryText = ''
+            else:
+                FinalMessage(Chat, EntryText) # Si le message ne commence pas par un point, on l'envoie normalement
 
 
 
@@ -142,6 +189,9 @@ root.title('LGame') #On définit notre nom, ici LGame
 root.geometry("800x460") # On définit sa taille
 root.resizable(width=FALSE, height=FALSE) # On dit que la fenêtre ne peut pas être redimensionnée
 
+BackGround = Canvas(root, width=800, height=460)
+BackGround.pack()
+
 #Fenêtre du Chat
 Chat = Text(root, bd=0, bg="white", height="8", width="50", font="Arial") #Customisation de la fenêtre de chat
 Chat.insert(END, "Bienvenue à cette partie de Loup Garous !\n") #On insère du texte
@@ -151,7 +201,10 @@ Chat.config(state=DISABLED) #Une fenêtre où ne peut pas écrire, sinon wtf
 PictureBox = Canvas(root, width=200, height=200)
 
 #Fenetre Joueurs
-PlayerBox = Canvas(root, bd=0, height="13", width = "25")
+PlayerBox = Label(root,bd=0, height="13", width = "25")
+
+#Fenetre timer
+TimerBox = Label(root)
 
 #Barre de Scrolling
 scrollbar = Scrollbar(root, command=Chat.yview)
@@ -178,25 +231,35 @@ Chat.place(x=6,y=6, height=386, width=370) #Le cadre du Chat
 ChatBox.place(x=128, y=401, height=50, width=500) #Le cadre de la boite à message (lol)
 BoutonEnvoi.place(x=6, y=401, height=50) #Le cadre du bouton
 Launcher.place(x=650, y=401, height=50 ) #Le cadre du bouton
-PictureBox.place(x=650, y=10)
-PlayerBox.place(x= 400, y= 150)
+PictureBox.place(x=645, y=5)
+PlayerBox.place(x= 645, y= 215)
+TimerBox.place(x= 655, y= 165)
 
 
 #Images
-ImgLoupGarou = PhotoImage(file ='')
-ImgCupidon = PhotoImage(file ='')
-ImgChasseur = PhotoImage(file ='')
-ImgSorciere = PhotoImage(file ='')
+ImgLoupGarou = PhotoImage(file ='lg.gif')
+ImgCupidon = PhotoImage(file ='cupi.gif')
+ImgChasseur = PhotoImage(file ='chassou.gif')
+ImgSorciere = PhotoImage(file ='soso.gif')
+FondJour = PhotoImage(file ='FondJour.gif')
+FondNuit = PhotoImage(file ='FondNuit.gif')
 
 
 #---------------------------------------------------#
-#----------------GESTION DES PLAYERS----------------#
+#----------------GESTION DES DONNEES----------------#
 #---------------------------------------------------#
 
 
 
 PlayerList = ['Player','Ordi1','Ordi2','Ordi3','Ordi4']
 RoleList = ['LoupGarou','LoupGarou','Cupidon','Sorciere','Chasseur']
+
+secNuit = 60
+isNuit = False
+secJour = 60
+isJour = False
+
+
 JoueurIsVoted = 0
 Ordi1IsVoted = 0
 Ordi2IsVoted = 0
