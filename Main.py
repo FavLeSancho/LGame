@@ -201,7 +201,10 @@ Chat.config(state=DISABLED) #Une fenêtre où ne peut pas écrire, sinon wtf
 PictureBox = Canvas(root, width=200, height=200)
 
 #Fenetre Joueurs
-PlayerBox = Label(root,bd=0, height="13", width = "25")
+PlayerBox = Text(root, bd=0, height="8", width = "25", font = 'Arial')
+texte = """Joueurs restants :"""
+PlayerBox.insert("0.0", texte, "texte")
+PlayerBox.config(state = DISABLED)
 
 #Fenetre timer
 TimerBox = Label(root)
