@@ -8,22 +8,6 @@ import random
 def Main():
     Launcher.destroy() #Quand on clique, le bouton disparait
 
-    Joueur = random.choice(RoleList)
-    RoleList.remove(Joueur)
-    #------------#
-    Ordi1 = random.choice(RoleList)
-    RoleList.remove(Ordi1)
-    #------------#
-    Ordi2 = random.choice(RoleList)
-    RoleList.remove(Ordi2)
-    #------------#
-    Ordi3 = random.choice(RoleList)
-    RoleList.remove(Ordi3)
-    #------------#
-    Ordi4 = random.choice(RoleList)
-    RoleList.remove(Ordi4)
-    
-
     if Joueur == 'LoupGarou':
         PictureBox.create_image(75, 75, image=ImgLoupGarou)
     elif Joueur == 'Chasseur':
@@ -33,13 +17,8 @@ def Main():
     else:
         PictureBox.create_image(75, 75, image=ImgSorciere)
 
-
     TimerNuit()
 
-    if isNuit == True:
-        BackGround.create_image(400, 230, image=FondNuit)
-    elif isJour == True:
-        BackGround.create_image(400, 230, image=FondJour)
         
     
         
@@ -47,6 +26,7 @@ def Main():
     
 def TimerNuit():
     global secNuit, isNuit
+    BackGround.create_image(400, 230, image=FondNuit)
     if secNuit != 0:
         isNuit = True
         secNuit -= 1
@@ -61,6 +41,7 @@ def TimerNuit():
 
 def TimerJour():
     global secJour, isJour
+    BackGround.create_image(400, 230, image=FondJour)
     if secJour != 0:
         isJour = True
         secJour -= 1
@@ -150,9 +131,58 @@ def Command(EntryText):
                         Chat.config(state=DISABLED)#Et on 'ferme' le chat
                         Chat.yview(END)
             #Fin du Message Chat
-                        
+
                 else: #Sinon, on ne revoie rien
                     EntryText = ''
+
+            elif EntryText[:6] == '.kill ':#Commande .kill
+                if Joueur == 'LoupGarou':
+                    if isJour == True:
+                        EntryText = ''
+                    EntryText = EntryText.replace("\n", '') 
+                    EntryText = EntryText.replace(".kill ", '')
+                    if EntryText in PlayerList:
+                        Kill(EntryText)
+
+                        KillMessage = "Vous avez décidé de tuer " + EntryText + '.\nIl ne se reveillera pas demain. \n'
+                        Chat.config(state=NORMAL)
+                        if Chat.index('end') != None:
+                            Ligne = float(Chat.index('end'))-1.0 # On définit la position du message
+                            Chat.insert(END, KillMessage + '\n') #On l'insert dans le Chat
+                            Chat.tag_add('Start', Ligne, Ligne + 1.100) #On le repère avec Ligne (position)
+                            Chat.tag_config('Start', foreground="#ED0000", font=("Arial", 12, "bold")) #On lui donne une couleur, taille
+                            Chat.config(state=DISABLED)#Et on 'ferme' le chat
+                            Chat.yview(END)
+
+                    else:
+                        EntryText = ''
+                else:
+                        EntryText = ''
+
+            elif EntryText[:9] == '.revenge ':#Commande .revenge (chasseur)
+                if Joueur == 'Chasseur':
+                    if isJour == False:
+                        EntryText = ''
+                    EntryText = EntryText.replace("\n", '') 
+                    EntryText = EntryText.replace(".revenge ", '')
+                    if EntryText in PlayerList:
+                        Kill(EntryText)
+
+                        RevengeMessage = "Dans un élan d'éffort, vous tirez sur " + EntryText + '.'
+                        Chat.config(state=NORMAL)
+                        if Chat.index('end') != None:
+                            Ligne = float(Chat.index('end'))-1.0 # On définit la position du message
+                            Chat.insert(END, RevengeMessage + '\n') #On l'insert dans le Chat
+                            Chat.tag_add('Start', Ligne, Ligne + 1.100) #On le repère avec Ligne (position)
+                            Chat.tag_config('Start', font=("Arial", 12, "bold")) #On lui donne une couleur, taille
+                            Chat.config(state=DISABLED)#Et on 'ferme' le chat
+                            Chat.yview(END)
+                    else:
+                        EntryText = ''
+                else:
+                        EntryText = ''
+                    
+                        
             else:
                 if isNuit == True:
                     EntryText = ''
@@ -163,7 +193,6 @@ def Command(EntryText):
                 EntryText = ''
             else:
                 FinalMessage(Chat, EntryText) # Si le message ne commence pas par un point, on l'envoie normalement
-
 
 
 def Vote(Player):
@@ -179,6 +208,9 @@ def Vote(Player):
             Ordi3IsVoted += 1
         if Player == 'Ordi4':
             Ordi4IsVoted += 1
+
+def Kill(Player):
+    PlayerList.remove(Player)
 
 #---------------------------------------------------#
 #----------------GESTION DU GRAPHISME---------------#
@@ -202,7 +234,7 @@ PictureBox = Canvas(root, width=200, height=200)
 
 #Fenetre Joueurs
 PlayerBox = Text(root, bd=0, height="8", width = "25", font = 'Arial')
-texte = """Joueurs restants :"""
+texte = """Joueurs restants :\n"""
 PlayerBox.insert("0.0", texte, "texte")
 PlayerBox.config(state = DISABLED)
 
@@ -256,6 +288,21 @@ FondNuit = PhotoImage(file ='FondNuit.gif')
 
 PlayerList = ['Player','Ordi1','Ordi2','Ordi3','Ordi4']
 RoleList = ['LoupGarou','LoupGarou','Cupidon','Sorciere','Chasseur']
+
+Joueur = random.choice(RoleList)
+RoleList.remove(Joueur)
+    #------------#
+Ordi1 = random.choice(RoleList)
+RoleList.remove(Ordi1)
+    #------------#
+Ordi2 = random.choice(RoleList)
+RoleList.remove(Ordi2)
+    #------------#
+Ordi3 = random.choice(RoleList)
+RoleList.remove(Ordi3)
+    #------------#
+Ordi4 = random.choice(RoleList)
+RoleList.remove(Ordi4)
 
 secNuit = 60
 isNuit = False
