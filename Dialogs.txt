@@ -1,0 +1,30 @@
+LE JEU COMMENCE !
+[]
+[Privé] Vous êtes Loup-Garou. Votre objectif est d'éliminer tous les innocents. Chaque nuit, vous vous réunissez entre Loups pour décider d'une victime à éliminer... Bon jeu et... Bonne chance !
+[Privé] Vous êtes Sorcière. Votre objectif est d'éliminer tous les Loups-Garous. Vous disposez d'une potion de mort pour assassiner quelqu'un... Bon jeu et... Bonne chance !
+[Privé] Vous êtes Chasseur. Votre objectif est d'éliminer tous les Loups-Garous. A votre mort, vous pourrez éliminer un joueur en utilisant votre dernier souffle... Bon jeu et... Bonne chance !
+[Privé] Vous êtes mort. Vous pouvez continuer à parler mais seuls les morts verront vos messages.
+
+Les loups vont décider d'une victime à éliminer.
+[Joueur] vote pour dévorer [Joueur]
+Les loups vont dévorer la cible dans quelques instants !
+Les loups on décidé d'éliminer [Joueur]
+
+
+Cupidon va pouvoir désigner deux amoureux.
+La sorcière va pouvoir utiliser ses potions.
+[Privé] Avec vos subtiles potions vous arrivez à empoisonner [Joueur]. Il ne se reveillera pas demain...
+
+
+Le village se réveille sans... [Joueur] qui était [Rôle].
+Le chasseur dispose de 30 secondes pour éliminer sa cible !
+PAN ! [Joueur]([Rôle]) a été tué par le chasseur.
+
+Le village a décidé d'éliminer [Joueur] qui était [Rôle].
+
+Une nouvelle nuit tombe sur le village de Thiercelieux...
+
+Tout le monde est mort !
+Les LOUPS-GAROUS ont gagné !
+Les VILLAGEOIS ont gagné !
+Les AMOUREUX on gagné !
