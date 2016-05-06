@@ -7,16 +7,29 @@ import random
 
 def Main():
     Launcher.destroy() #Quand on clique, le bouton disparait
+    Chat.config(state = NORMAL)
+    Chat.insert(END, "LE JEU COMMENCE ! \n \n")
+    
 
     if Joueur == 'LoupGarou':
         PictureBox.create_image(75, 75, image=ImgLoupGarou)
+        Chat.insert(END, RoleLG + '\n')
+        Chat.insert(END, "Utilisez la commande '.kill + nom', pour éliminer un joueur." + '\n')
     elif Joueur == 'Chasseur':
         PictureBox.create_image(75, 75, image=ImgChasseur)
+        Chat.insert(END, RoleChassou + '\n')
+        Chat.insert(END, """Utilisez la commande '.revenge + nom', pour éliminer quelqu'un lorsque
+vous mourrez.""" + '\n')
     elif Joueur == 'Cupidon':
         PictureBox.create_image(75, 75, image=ImgCupidon)
+        Chat.insert(END, RoleCupi + '\n')
+        Chat.insert(END, "Utilisez la commande '.love + nom' pour vous unir avec un joueur." + '\n')
     else:
         PictureBox.create_image(75, 75, image=ImgSorciere)
+        Chat.insert(END, RoleSoso + '\n')
+        Chat.insert(END, "Utilisez la commande '.poison + nom' pour éliminer un joueur." + '\n')
 
+    Chat.config(state = DISABLED)
     TimerNuit()
 
         
@@ -27,6 +40,8 @@ def Main():
 def TimerNuit():
     global secNuit, isNuit
     BackGround.create_image(400, 230, image=FondNuit)
+
+    # Ordre : ActionCupi / ActionLG / ActionSoso 
     if secNuit != 0:
         isNuit = True
         secNuit -= 1
@@ -48,12 +63,15 @@ def TimerJour():
         TimerBox['text'] = 'Jour :\n' +'Temps restant : ' + str(secJour)
         TimerBox.after(1000, TimerJour)
     else:
+        #Gestion de la mort du voté ici
         TimerBox['text'] = ''
         isJour = True
         TimerNuit()
         secJour += 60
         
-        
+
+def ActionCupi():
+    Chat.insert(END, ActionCupi + '\n')
     
 
 
@@ -139,12 +157,14 @@ def Command(EntryText):
                 if Joueur == 'LoupGarou':
                     if isJour == True:
                         EntryText = ''
+                    if Player not in PlayerList:
+                        EntryText = ''
                     EntryText = EntryText.replace("\n", '') 
                     EntryText = EntryText.replace(".kill ", '')
                     if EntryText in PlayerList:
                         Kill(EntryText)
 
-                        KillMessage = "Vous avez décidé de tuer " + EntryText + '.\nIl ne se reveillera pas demain. \n'
+                        KillMessage = "Vous avez décidé de tuer " + EntryText + '.\n Il ne se reveillera pas demain. \n'
                         Chat.config(state=NORMAL)
                         if Chat.index('end') != None:
                             Ligne = float(Chat.index('end'))-1.0 # On définit la position du message
@@ -162,6 +182,8 @@ def Command(EntryText):
             elif EntryText[:9] == '.revenge ':#Commande .revenge (chasseur)
                 if Joueur == 'Chasseur':
                     if isJour == False:
+                        EntryText = ''
+                    if Joueur in PlayerList:
                         EntryText = ''
                     EntryText = EntryText.replace("\n", '') 
                     EntryText = EntryText.replace(".revenge ", '')
@@ -181,7 +203,49 @@ def Command(EntryText):
                         EntryText = ''
                 else:
                         EntryText = ''
+
+            elif EntryText[:6] == '.love ':
+                if Joueur == 'Cupidon':
+                    if isJour == True:
+                        EntryText = ''
+                    if Joueur in PlayerList:
+                        EntryText = EntryText.replace("\n", '') 
+                        EntryText = EntryText.replace(".love ", '')
+                        if EntryText in PlayerList:
+                            Love(EntryText)
+
+                        else:
+                            EntryText = ''
+                    else:
+                        EntryText = ''
+                else:
+                        EntryText = ''
+
+            elif EntryText[:8] == '.poison ':
+                if Joueur == 'Sorciere':
+                    if isJour == True:
+                        EntryText = ''
+                    if Joueur in PlayerList:
+                        EntryText = EntryText.replace("\n", '') 
+                        EntryText = EntryText.replace(".poison ", '')
+                        if EntryText in PlayerList:
+                            Kill(EntryText)
+
+                        else:
+                            EntryText = ''
+                    else:
+                        EntryText = ''
+                else:
+                        EntryText = ''
                     
+                
+
+
+            if EntryText[:5] == '.info':
+                Chat.config(state = NORMAL)
+                Chat.insert(END, PlayerList)
+                Chat.insert(END, '\n')
+                Chat.config(state = DISABLED)
                         
             else:
                 if isNuit == True:
@@ -209,8 +273,71 @@ def Vote(Player):
         if Player == 'Ordi4':
             Ordi4IsVoted += 1
 
+def Love(Player):
+    global JoueurIsLove,Ordi1IsLove,Ordi2IsLove,Ordi3IsLove,Ordi4IsLove
+    for Player in PlayerList:
+        JoueurIsLove = True
+            
+        if Player == 'Ordi1':
+            Ordi1IsLove = True
+        if Player == 'Ordi2':
+            Ordi2IsLove = True
+        if Player == 'Ordi3':
+            Ordi3IsLove = True
+        if Player == 'Ordi4':
+            Ordi4IsLove = True
+    
+    
+
 def Kill(Player):
+    global Ordi1IsLove,Ordi2IsLove,Ordi3IsLove,Ordi4IsLove
     PlayerList.remove(Player)
+
+    if Ordi1IsLove == True:
+        if Ordi1 not in PlayerList:
+            if JoueurisLove == True:
+                PlayerList.remove(Joueur)
+            if Ordi2IsLove == True:
+                PlayerList.remove(Ordi2)
+            if Ordi3IsLove == True:
+                PlayerList.remove(Ordi3)
+            if Ordi4IsLove == True:
+                PlayerList.remove(Ordi4)
+                
+            
+    if Ordi2IsLove == True:
+        if Ordi2 not in PlayerList:
+            if JoueurisLove == True:
+                PlayerList.remove(Joueur)
+            if Ord1IsLove == True:
+                PlayerList.remove(Ordi1)
+            if Ordi3IsLove == True:
+                PlayerList.remove(Ordi3)
+            if Ordi4IsLove == True:
+                PlayerList.remove(Ordi4)
+
+    if Ordi3IsLove == True:
+        if Ordi3 not in PlayerList:
+            if JoueurisLove == True:
+                PlayerList.remove(Joueur)
+            if Ordi1IsLove == True:
+                PlayerList.remove(Ordi1)
+            if Ordi2IsLove == True:
+                PlayerList.remove(Ordi2)
+            if Ordi4IsLove == True:
+                PlayerList.remove(Ordi4)
+        
+    if Ordi4IsLove == True:
+        if Ordi4 not in PlayerList:
+            if JoueurisLove == True:
+                PlayerList.remove(Joueur)
+            if Ordi1IsLove == True:
+                PlayerList.remove(Ordi1)
+            if Ordi2IsLove == True:
+                PlayerList.remove(Ordi2)
+            if Ordi3IsLove == True:
+                PlayerList.remove(Ordi3)
+
 
 #---------------------------------------------------#
 #----------------GESTION DU GRAPHISME---------------#
@@ -261,8 +388,8 @@ ChatBox.bind("<Return>", StopChat) #Quand on appuie sur Enter, Utiliser la fonct
 ChatBox.bind("<KeyRelease-Return>", ReleaseEnter) #Quand on relache Enter, Utiliser la fonction ReleaseEnter
 
 #Placer les différents tools sur l'interface
-scrollbar.place(x=376,y=6, height=386) #La Barre de Scroll
-Chat.place(x=6,y=6, height=386, width=370) #Le cadre du Chat
+scrollbar.place(x=559,y=6, height=386) #La Barre de Scroll
+Chat.place(x=6,y=6, height=386, width=570) #Le cadre du Chat
 ChatBox.place(x=128, y=401, height=50, width=500) #Le cadre de la boite à message (lol)
 BoutonEnvoi.place(x=6, y=401, height=50) #Le cadre du bouton
 Launcher.place(x=650, y=401, height=50 ) #Le cadre du bouton
@@ -290,6 +417,7 @@ PlayerList = ['Player','Ordi1','Ordi2','Ordi3','Ordi4']
 RoleList = ['LoupGarou','LoupGarou','Cupidon','Sorciere','Chasseur']
 
 Joueur = random.choice(RoleList)
+Player = PlayerList[0]
 RoleList.remove(Joueur)
     #------------#
 Ordi1 = random.choice(RoleList)
@@ -315,3 +443,60 @@ Ordi1IsVoted = 0
 Ordi2IsVoted = 0
 Ordi3IsVoted = 0
 Ordi4IsVoted = 0
+
+JoueurIsLove = False
+Ordi1IsLove = False
+Ordi2IsLove = False
+Ordi3IsLove = False
+Ordi4IsLove = False
+
+
+#---------------------------------------------------#
+#----------------     DIALOGUES     ----------------#
+#---------------------------------------------------#
+
+RoleLG = """[Privé] Vous êtes Loup-Garou. Votre objectif est d'éliminer tous les innocents.
+Chaque nuit, vous vous réunissez entre Loups pour décider d'une victime
+à éliminer... Bon jeu et... Bonne chance !"""
+
+RoleSoso = """[Privé] Vous êtes Sorcière. Votre objectif est d'éliminer tous les Loups-Garous.
+Vous disposez d'une potion de mort pour assassiner quelqu'un...
+Bon jeu et... Bonne chance !"""
+
+RoleChassou = """[Privé] Vous êtes Chasseur. Votre objectif est d'éliminer tous les Loups-Garous.
+A votre mort, vous pourrez éliminer un joueur en utilisant votre dernier souffle...
+Bon jeu et... Bonne chance !"""
+
+RoleCupi = """[Privé] Vous êtes Cupidon. Votre objectif est d'éliminer tous les Loups-Garous.
+Dès le début de la partie, vous pourrez former un couple entre deux joueurs.
+Leur objectif sera de survivre ensemble, car si l'un d'eux meurt,
+l'autre se suicidera... Bon jeu et... bonne chance !"""
+
+Death = "[Privé] Vous êtes mort."
+
+
+ActionLG = "Les loups vont décider d'une victime à éliminer."
+Dévorer = "[Joueur] vote pour dévorer [Joueur]"
+VictimeLG = "Les loups on décidé d'éliminer [Joueur]"
+
+
+ActionCupi = "Cupidon va pouvoir désigner deux amoureux."
+ChoixLove = "[Privé] Grâce à vos deux flèches d'amour, vous rendez [joueur] et [joueur] amoureux à tout jamais..."
+PvLove = "[Privé] Vous êtes amoureux de [joueur]! Si l'un de vous vient à mourir, l'autre ne pourra supporter cette souffrance et se suiciedera immédiatement.."
+
+ActionSoso = "La sorcière va pouvoir utiliser ses potions."
+VictimeSoso = "[Privé] Avec vos subtiles potions vous arrivez à empoisonner [Joueur]. Il ne se reveillera pas demain..."
+
+
+Awakening = "Le village se réveille sans... [Joueur] qui était [Rôle]."
+ChoixChassou = "Le chasseur dispose de 30 secondes pour éliminer sa cible !"
+Pan = "PAN ! [Joueur]([Rôle]) a été tué par le chasseur."
+
+ChoixVillage = "Le village a décidé d'éliminer [Joueur] qui était [Rôle]."
+
+Night = "Une nouvelle nuit tombe sur le village de Thiercelieux..."
+
+RipAll = "Tout le monde est mort !"
+GgLg = "Les LOUPS-GAROUS ont gagné !"
+GgVillage = "Les VILLAGEOIS ont gagné !"
+GgLove = "Les AMOUREUX on gagné !"
