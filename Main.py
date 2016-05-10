@@ -34,12 +34,44 @@ vous mourrez.""" + '\n')
 
         
     
-        
-
-    
 def TimerNuit():
     global secNuit, isNuit
     BackGround.create_image(400, 230, image=FondNuit)
+    if secNuit == 55:
+        if AlreadyPlayed != True:
+            Chat.config(state = NORMAL)
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, ActionCupi + '\n')
+            Chat.tag_add("CupiText", Ligne, Ligne + 0.41)
+            Chat.tag_config("CupiText", foreground="#FF8000", font=("Arial", 12, "bold")) 
+            if Joueur == 'Cupidon':
+                CanPlay = True
+                Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
+            Chat.config(state = DISABLED)
+
+    if secNuit == 40:
+        Chat.config(state = NORMAL)
+        Ligne = float(Chat.index('end'))-1.0
+        Chat.insert(END, ActionLG + '\n')
+        Chat.tag_add("LGText", Ligne, Ligne + 0.47)
+        Chat.tag_config("LGText", foreground="#FF8000", font=("Arial", 12, "bold")) 
+        if Joueur == 'LoupGarou':
+            CanPlay = True
+            Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
+        Chat.config(state = DISABLED)
+        
+
+    if secNuit == 30:
+        Chat.config(state = NORMAL)
+        Ligne = float(Chat.index('end'))-1.0
+        Chat.insert(END, ActionSoso + '\n')
+        Chat.tag_add("SosoText", Ligne, Ligne + 0.43)
+        Chat.tag_config("SosoText", foreground="#FF8000", font=("Arial", 12, "bold")) 
+        if Joueur == 'Sorciere':
+            CanPlay = True
+            Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
+        Chat.config(state = DISABLED)
+    
 
     # Ordre : ActionCupi / ActionLG / ActionSoso 
     if secNuit != 0:
@@ -65,14 +97,9 @@ def TimerJour():
     else:
         #Gestion de la mort du voté ici
         TimerBox['text'] = ''
-        isJour = True
+        isJour = False
         TimerNuit()
         secJour += 60
-        
-
-def ActionCupi():
-    Chat.insert(END, ActionCupi + '\n')
-    
 
 
 def FinalMessage(Chat, EntryText):
@@ -159,6 +186,8 @@ def Command(EntryText):
                         EntryText = ''
                     if Player not in PlayerList:
                         EntryText = ''
+                    if CanPlay == False:
+                        EntryText = ''
                     EntryText = EntryText.replace("\n", '') 
                     EntryText = EntryText.replace(".kill ", '')
                     if EntryText in PlayerList:
@@ -177,13 +206,15 @@ def Command(EntryText):
                     else:
                         EntryText = ''
                 else:
-                        EntryText = ''
+                    EntryText = ''
 
             elif EntryText[:9] == '.revenge ':#Commande .revenge (chasseur)
                 if Joueur == 'Chasseur':
                     if isJour == False:
                         EntryText = ''
-                    if Joueur in PlayerList:
+                    if Player in PlayerList:
+                        EntryText = ''
+                    if CanPlay == False:
                         EntryText = ''
                     EntryText = EntryText.replace("\n", '') 
                     EntryText = EntryText.replace(".revenge ", '')
@@ -202,13 +233,15 @@ def Command(EntryText):
                     else:
                         EntryText = ''
                 else:
-                        EntryText = ''
+                    EntryText = ''
 
             elif EntryText[:6] == '.love ':
                 if Joueur == 'Cupidon':
                     if isJour == True:
                         EntryText = ''
-                    if Joueur in PlayerList:
+                    if CanPlay == False:
+                        EntryText = ''
+                    if Player in PlayerList:
                         EntryText = EntryText.replace("\n", '') 
                         EntryText = EntryText.replace(".love ", '')
                         if EntryText in PlayerList:
@@ -219,13 +252,15 @@ def Command(EntryText):
                     else:
                         EntryText = ''
                 else:
-                        EntryText = ''
+                    EntryText = ''
 
             elif EntryText[:8] == '.poison ':
                 if Joueur == 'Sorciere':
                     if isJour == True:
                         EntryText = ''
-                    if Joueur in PlayerList:
+                    if CanPlay == False:
+                        EntryText = ''
+                    if Player in PlayerList:
                         EntryText = EntryText.replace("\n", '') 
                         EntryText = EntryText.replace(".poison ", '')
                         if EntryText in PlayerList:
@@ -236,7 +271,7 @@ def Command(EntryText):
                     else:
                         EntryText = ''
                 else:
-                        EntryText = ''
+                    EntryText = ''
                     
                 
 
@@ -275,23 +310,81 @@ def Vote(Player):
 
 def Love(Player):
     global JoueurIsLove,Ordi1IsLove,Ordi2IsLove,Ordi3IsLove,Ordi4IsLove
+    AlreadyPlayed = True
     for Player in PlayerList:
-        JoueurIsLove = True
+
+        if Joueur == 'Cupidon':
+            JoueurIsLove = True
             
-        if Player == 'Ordi1':
+            if Player == 'Ordi1':
+                Ordi1IsLove = True
+            elif Player == 'Ordi2':
+                Ordi2IsLove = True
+            elif Player == 'Ordi3':
+                Ordi3IsLove = True
+            elif Player == 'Ordi4':
+                Ordi4IsLove = True
+
+        if Ordi1 == 'Cupidon':
             Ordi1IsLove = True
-        if Player == 'Ordi2':
+
+            
+            if Player == 'Joueur':
+                JoueurIsLove = True
+            elif Player == 'Ordi1':
+                Ordi1IsLove = True
+            elif Player == 'Ordi2':
+                Ordi2IsLove = True
+            elif Player == 'Ordi3':
+                Ordi3IsLove = True
+            elif Player == 'Ordi4':
+                Ordi4IsLove = True
+
+            
+
+        if Ordi2 == 'Cupidon':
             Ordi2IsLove = True
-        if Player == 'Ordi3':
+
+            if Player == 'Joueur':
+                JoueurIsLove = True
+            elif Player == 'Ordi1':
+                Ordi1IsLove = True
+            elif Player == 'Ordi3':
+                Ordi3IsLove = True
+            elif Player == 'Ordi4':
+                Ordi4IsLove = True
+
+        if Ordi3 == 'Cupidon':
             Ordi3IsLove = True
-        if Player == 'Ordi4':
+
+            if Player == 'Joueur':
+                JoueurIsLove = True
+            elif Player == 'Ordi1':
+                Ordi1IsLove = True
+            elif Player == 'Ordi2':
+                Ordi2IsLove = True
+            elif Player == 'Ordi4':
+                Ordi4IsLove = True
+
+        if Ordi4 == 'Cupidon':
             Ordi4IsLove = True
+
+            if Player == 'Joueur':
+                JoueurIsLove = True
+            elif Player == 'Ordi1':
+                Ordi1IsLove = True
+            elif Player == 'Ordi2':
+                Ordi2IsLove = True
+            elif Player == 'Ordi3':
+                Ordi3IsLove = True
     
     
 
 def Kill(Player):
     global Ordi1IsLove,Ordi2IsLove,Ordi3IsLove,Ordi4IsLove
     PlayerList.remove(Player)
+    CanPlay = False
+    AlreadyPlayed = True
 
     if Ordi1IsLove == True:
         if Ordi1 not in PlayerList:
@@ -416,8 +509,8 @@ FondNuit = PhotoImage(file ='FondNuit.gif')
 PlayerList = ['Player','Ordi1','Ordi2','Ordi3','Ordi4']
 RoleList = ['LoupGarou','LoupGarou','Cupidon','Sorciere','Chasseur']
 
-Joueur = random.choice(RoleList)
 Player = PlayerList[0]
+Joueur = random.choice(RoleList)
 RoleList.remove(Joueur)
     #------------#
 Ordi1 = random.choice(RoleList)
@@ -450,7 +543,8 @@ Ordi2IsLove = False
 Ordi3IsLove = False
 Ordi4IsLove = False
 
-
+CanPlay = True
+AlreadyPlayed = False
 #---------------------------------------------------#
 #----------------     DIALOGUES     ----------------#
 #---------------------------------------------------#
