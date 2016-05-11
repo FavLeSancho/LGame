@@ -1,5 +1,3 @@
-#Projet LG by Fav/Shirotani/user3
-
 from tkinter import *
 from random import *
 from time import *
@@ -35,18 +33,19 @@ vous mourrez.""" + '\n')
         
     
 def TimerNuit():
-    global secNuit, isNuit
+    global secNuit, isNuit, CanPlayLG, CanPlaySoso, CanPlayCupi, AlreadyPlayedCupi
     BackGround.create_image(400, 230, image=FondNuit)
     if secNuit == 55:
-        if AlreadyPlayed != True:
+        if AlreadyPlayedCupi != True:
             Chat.config(state = NORMAL)
             Ligne = float(Chat.index('end'))-1.0
             Chat.insert(END, ActionCupi + '\n')
             Chat.tag_add("CupiText", Ligne, Ligne + 0.41)
             Chat.tag_config("CupiText", foreground="#FF8000", font=("Arial", 12, "bold")) 
             if Joueur == 'Cupidon':
-                CanPlay = True
+                CanPlayCupi = True
                 Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
+                
             Chat.config(state = DISABLED)
 
     if secNuit == 40:
@@ -56,8 +55,28 @@ def TimerNuit():
         Chat.tag_add("LGText", Ligne, Ligne + 0.47)
         Chat.tag_config("LGText", foreground="#FF8000", font=("Arial", 12, "bold")) 
         if Joueur == 'LoupGarou':
-            CanPlay = True
+            CanPlayLG = True
             Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
+        else:
+            Victime = random.choice(RoleList)
+            if Victime == 'LoupGarou':
+                Victime = random.choice(RoleList)
+            if Joueur == Victime:
+                if Joueur != 'LoupGarou':
+                    Kill(Joueur)
+            if Ordi1 == Victime:
+                if Ordi1 != 'LoupGarou':
+                    Kill(Ord1i)
+            if Ordi2 == Victime:
+                if Ordi2 != 'LoupGarou':
+                    Kill(Ordi2)
+            if Ordi3 == Victime:
+                if Ordi3 != 'LoupGarou':
+                    Kill(Ordi3)
+            if Ordi4 == Victime:
+                if Ordi4 != 'LoupGarou':
+                    Kill(Ordi4)
+            
         Chat.config(state = DISABLED)
         
 
@@ -68,7 +87,7 @@ def TimerNuit():
         Chat.tag_add("SosoText", Ligne, Ligne + 0.43)
         Chat.tag_config("SosoText", foreground="#FF8000", font=("Arial", 12, "bold")) 
         if Joueur == 'Sorciere':
-            CanPlay = True
+            CanPlaySoso = True
             Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
         Chat.config(state = DISABLED)
     
@@ -79,7 +98,23 @@ def TimerNuit():
         secNuit -= 1
         TimerBox['text'] = 'Nuit :\n' + 'Temps restant : ' + str(secNuit)
         TimerBox.after(1000, TimerNuit)
-    else:
+    elif secNuit == 0:
+        Chat.config(state = NORMAL)
+        Chat.insert(END, DeadList + '\n')
+        if Player not in PlayerList:
+            Chat.insert(END, "- Joueur" + "(" + Joueur + ")" +'\n')
+        if Player1 not in PlayerList:
+            Chat.insert(END, "- Ordi1" + "(" + Ordi1 + ")" + '\n')
+        if Player2 not in PlayerList:
+            Chat.insert(END, "- Ordi2" + "(" + Ordi2 + ")" + '\n')
+        if Player3 not in PlayerList:
+            Chat.insert(END, "- Ordi3" + "(" + Ordi3 + ")" + '\n')
+        if Player4 not in PlayerList:
+            Chat.insert(END, "- Ordi4" + "(" + Ordi4 + ")" + '\n')
+        Chat.config(state = DISABLED)
+        Chat.yview(END)
+
+            
         TimerBox['text'] = ''
         isNuit = False
         TimerJour()
@@ -186,22 +221,24 @@ def Command(EntryText):
                         EntryText = ''
                     if Player not in PlayerList:
                         EntryText = ''
-                    if CanPlay == False:
+                    if CanPlayLG == False:
                         EntryText = ''
+
                     EntryText = EntryText.replace("\n", '') 
                     EntryText = EntryText.replace(".kill ", '')
                     if EntryText in PlayerList:
-                        Kill(EntryText)
+                        if AlreadyPlayedLG != True:
+                            Kill(EntryText)
 
-                        KillMessage = "Vous avez décidé de tuer " + EntryText + '.\n Il ne se reveillera pas demain. \n'
-                        Chat.config(state=NORMAL)
-                        if Chat.index('end') != None:
-                            Ligne = float(Chat.index('end'))-1.0 # On définit la position du message
-                            Chat.insert(END, KillMessage + '\n') #On l'insert dans le Chat
-                            Chat.tag_add('Start', Ligne, Ligne + 1.100) #On le repère avec Ligne (position)
-                            Chat.tag_config('Start', foreground="#ED0000", font=("Arial", 12, "bold")) #On lui donne une couleur, taille
-                            Chat.config(state=DISABLED)#Et on 'ferme' le chat
-                            Chat.yview(END)
+                            KillMessage = "Vous avez décidé de tuer " + EntryText + '.\n Il ne se reveillera pas demain. \n'
+                            Chat.config(state=NORMAL)
+                            if Chat.index('end') != None:
+                                Ligne = float(Chat.index('end'))-1.0 # On définit la position du message
+                                Chat.insert(END, KillMessage + '\n') #On l'insert dans le Chat
+                                Chat.tag_add('Start', Ligne, Ligne + 1.100) #On le repère avec Ligne (position)
+                                Chat.tag_config('Start', foreground="#ED0000", font=("Arial", 12, "bold")) #On lui donne une couleur, taille
+                                Chat.config(state=DISABLED)#Et on 'ferme' le chat
+                                Chat.yview(END)
 
                     else:
                         EntryText = ''
@@ -239,7 +276,7 @@ def Command(EntryText):
                 if Joueur == 'Cupidon':
                     if isJour == True:
                         EntryText = ''
-                    if CanPlay == False:
+                    if CanPlayCupi == False:
                         EntryText = ''
                     if Player in PlayerList:
                         EntryText = EntryText.replace("\n", '') 
@@ -258,13 +295,14 @@ def Command(EntryText):
                 if Joueur == 'Sorciere':
                     if isJour == True:
                         EntryText = ''
-                    if CanPlay == False:
+                    if CanPlaySoso == False:
                         EntryText = ''
                     if Player in PlayerList:
                         EntryText = EntryText.replace("\n", '') 
                         EntryText = EntryText.replace(".poison ", '')
                         if EntryText in PlayerList:
-                            Kill(EntryText)
+                            if AlreadyPlayedSoso != True:
+                                Kill(EntryText)
 
                         else:
                             EntryText = ''
@@ -309,8 +347,8 @@ def Vote(Player):
             Ordi4IsVoted += 1
 
 def Love(Player):
-    global JoueurIsLove,Ordi1IsLove,Ordi2IsLove,Ordi3IsLove,Ordi4IsLove
-    AlreadyPlayed = True
+    global JoueurIsLove,Ordi1IsLove,Ordi2IsLove,Ordi3IsLove,Ordi4IsLove,AlreadyPlayedCupi
+    AlreadyPlayedCupi = True
     for Player in PlayerList:
 
         if Joueur == 'Cupidon':
@@ -381,10 +419,15 @@ def Love(Player):
     
 
 def Kill(Player):
-    global Ordi1IsLove,Ordi2IsLove,Ordi3IsLove,Ordi4IsLove
+    global Ordi1IsLove,Ordi2IsLove,Ordi3IsLove,Ordi4IsLove, AlreadyPlayedLG, AlreadyPlayedCupi, AlreadyPlayedSoso
     PlayerList.remove(Player)
     CanPlay = False
-    AlreadyPlayed = True
+    if Joueur == "LoupGarou":
+        AlreadyPlayedLG = True
+    elif Joueur == "Sorciere":
+        AlreadyPlayedSoso = True
+    elif Joueur == "Cupidon":
+        AlreadyPlayedCupi = True        
 
     if Ordi1IsLove == True:
         if Ordi1 not in PlayerList:
@@ -509,19 +552,23 @@ FondNuit = PhotoImage(file ='FondNuit.gif')
 PlayerList = ['Player','Ordi1','Ordi2','Ordi3','Ordi4']
 RoleList = ['LoupGarou','LoupGarou','Cupidon','Sorciere','Chasseur']
 
-Player = PlayerList[0]
+Player = 'Player'
 Joueur = random.choice(RoleList)
 RoleList.remove(Joueur)
     #------------#
+Player1 = 'Ordi1'
 Ordi1 = random.choice(RoleList)
 RoleList.remove(Ordi1)
     #------------#
+Player2 = 'Ordi2'
 Ordi2 = random.choice(RoleList)
 RoleList.remove(Ordi2)
     #------------#
+Player3 = 'Ordi3'
 Ordi3 = random.choice(RoleList)
 RoleList.remove(Ordi3)
     #------------#
+Player4 = 'Ordi4'
 Ordi4 = random.choice(RoleList)
 RoleList.remove(Ordi4)
 
@@ -543,11 +590,17 @@ Ordi2IsLove = False
 Ordi3IsLove = False
 Ordi4IsLove = False
 
-CanPlay = True
-AlreadyPlayed = False
+CanPlayLG = False
+CanPlaySoso = False
+CanPlayCupi = False
+AlreadyPlayedLG = False
+AlreadyPlayedSoso = False
+AlreadyPlayedCupi = False
 #---------------------------------------------------#
 #----------------     DIALOGUES     ----------------#
 #---------------------------------------------------#
+
+DeadList = "Liste des morts : \n"
 
 RoleLG = """[Privé] Vous êtes Loup-Garou. Votre objectif est d'éliminer tous les innocents.
 Chaque nuit, vous vous réunissez entre Loups pour décider d'une victime
@@ -581,14 +634,13 @@ PvLove = "[Privé] Vous êtes amoureux de [joueur]! Si l'un de vous vient à mou
 ActionSoso = "La sorcière va pouvoir utiliser ses potions."
 VictimeSoso = "[Privé] Avec vos subtiles potions vous arrivez à empoisonner [Joueur]. Il ne se reveillera pas demain..."
 
-
-Awakening = "Le village se réveille sans... [Joueur] qui était [Rôle]."
 ChoixChassou = "Le chasseur dispose de 30 secondes pour éliminer sa cible !"
 Pan = "PAN ! [Joueur]([Rôle]) a été tué par le chasseur."
 
 ChoixVillage = "Le village a décidé d'éliminer [Joueur] qui était [Rôle]."
 
 Night = "Une nouvelle nuit tombe sur le village de Thiercelieux..."
+
 
 RipAll = "Tout le monde est mort !"
 GgLg = "Les LOUPS-GAROUS ont gagné !"
