@@ -6,7 +6,11 @@ import random
 def Main():
     Launcher.destroy() #Quand on clique, le bouton disparait
     Chat.config(state = NORMAL)
-    Chat.insert(END, "LE JEU COMMENCE ! \n \n")
+    Ligne = float(Chat.index('end'))-1.0
+    Chat.insert(END, "Le jeu commence ! \n \n")
+    Chat.tag_add("start", Ligne, Ligne + 0.17)
+    Chat.tag_config("start", foreground="#008000", font=("Arial", 20)) #, "bold"
+
     
 
     if Joueur == 'LoupGarou':
@@ -27,13 +31,15 @@ vous mourrez.""" + '\n')
         Chat.insert(END, RoleSoso + '\n')
         Chat.insert(END, "Utilisez la commande '.poison + nom' pour éliminer un joueur." + '\n')
 
+    Chat.insert(END, "--------------------------------------------------------------------------------------------------------------" + '\n')
+    Chat.insert(END, Night + '\n')
     Chat.config(state = DISABLED)
     TimerNuit()
 
         
     
 def TimerNuit():
-    global secNuit, isNuit, CanPlayLG, CanPlaySoso, CanPlayCupi, AlreadyPlayedCupi
+    global secNuit, isNuit, CanPlayLG, CanPlaySoso, CanPlayCupi, AlreadyPlayedCupi, finish
     BackGround.create_image(400, 230, image=FondNuit)
     if secNuit == 55:
         if AlreadyPlayedCupi != True:
@@ -58,25 +64,16 @@ def TimerNuit():
             CanPlayLG = True
             Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
         else:
-            Victime = random.choice(RoleList)
-            if Victime == 'LoupGarou':
-                Victime = random.choice(RoleList)
-            if Joueur == Victime:
-                if Joueur != 'LoupGarou':
-                    Kill(Joueur)
-            if Ordi1 == Victime:
-                if Ordi1 != 'LoupGarou':
-                    Kill(Ord1i)
-            if Ordi2 == Victime:
-                if Ordi2 != 'LoupGarou':
-                    Kill(Ordi2)
-            if Ordi3 == Victime:
-                if Ordi3 != 'LoupGarou':
-                    Kill(Ordi3)
-            if Ordi4 == Victime:
-                if Ordi4 != 'LoupGarou':
-                    Kill(Ordi4)
-            
+            while finish is False:
+                Victime = random.choice(PlayerList)
+                for n in PlayerList:
+                    if Victime != 'LoupGarou':
+                        Kill(Victime)
+                        finish = True
+                    else:
+                        finish = False
+                    
+        finish = False
         Chat.config(state = DISABLED)
         
 
@@ -111,6 +108,8 @@ def TimerNuit():
             Chat.insert(END, "- Ordi3" + "(" + Ordi3 + ")" + '\n')
         if Player4 not in PlayerList:
             Chat.insert(END, "- Ordi4" + "(" + Ordi4 + ")" + '\n')
+
+        Chat.insert(END, Vote + '\n')
         Chat.config(state = DISABLED)
         Chat.yview(END)
 
@@ -596,6 +595,7 @@ CanPlayCupi = False
 AlreadyPlayedLG = False
 AlreadyPlayedSoso = False
 AlreadyPlayedCupi = False
+finish = False
 #---------------------------------------------------#
 #----------------     DIALOGUES     ----------------#
 #---------------------------------------------------#
@@ -637,9 +637,11 @@ VictimeSoso = "[Privé] Avec vos subtiles potions vous arrivez à empoisonner [J
 ChoixChassou = "Le chasseur dispose de 30 secondes pour éliminer sa cible !"
 Pan = "PAN ! [Joueur]([Rôle]) a été tué par le chasseur."
 
+Vote = """Une fois par jour, le village décide d'éliminer un joueur qu'il croit Loup-Garou.
+Pour voter contre quelqu'un, vous devez utiliser la commande '.vote ' + nom."""
 ChoixVillage = "Le village a décidé d'éliminer [Joueur] qui était [Rôle]."
 
-Night = "Une nouvelle nuit tombe sur le village de Thiercelieux..."
+Night = "La nuit tombe sur le village de Thiercelieux..."
 
 
 RipAll = "Tout le monde est mort !"
