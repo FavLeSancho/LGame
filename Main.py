@@ -51,6 +51,17 @@ def TimerNuit():
             if Joueur == 'Cupidon':
                 CanPlayCupi = True
                 Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
+            else:
+                while finish is False:
+                    random.shuffle(PlayerList)
+                    Lover = random.choice(PlayerList)
+                    if Lover != 'Cupidon':
+                        print(Lover)
+                        Love(Lover)
+                        finish = True
+                    else:
+                        finish = False
+                
                 
             Chat.config(state = DISABLED)
 
@@ -65,28 +76,41 @@ def TimerNuit():
             Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
         else:
             while finish is False:
+                random.shuffle(PlayerList)
                 Victime = random.choice(PlayerList)
-                for n in PlayerList:
-                    if Victime != 'LoupGarou':
-                        Kill(Victime)
-                        finish = True
-                    else:
-                        finish = False
+                if Victime != 'LoupGarou':
+                    Kill(Victime)
+                    finish = True
+                else:
+                    finish = False
                     
         finish = False
         Chat.config(state = DISABLED)
         
 
     if secNuit == 30:
-        Chat.config(state = NORMAL)
-        Ligne = float(Chat.index('end'))-1.0
-        Chat.insert(END, ActionSoso + '\n')
-        Chat.tag_add("SosoText", Ligne, Ligne + 0.43)
-        Chat.tag_config("SosoText", foreground="#FF8000", font=("Arial", 12, "bold")) 
-        if Joueur == 'Sorciere':
-            CanPlaySoso = True
-            Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
-        Chat.config(state = DISABLED)
+        if AlreadyPlayedSoso != True:
+            Chat.config(state = NORMAL)
+            
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, ActionSoso + '\n')
+            Chat.tag_add("SosoText", Ligne, Ligne + 0.43)
+            Chat.tag_config("SosoText", foreground="#FF8000", font=("Arial", 12, "bold")) 
+            if Joueur == 'Sorciere':
+                CanPlaySoso = True
+                Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
+            else:
+                while finish is False:
+                    random.shuffle(PlayerList)
+                    Poisonned = random.choice(PlayerList)
+                    if Poisonned != 'Sorciere':
+                        Kill(Poisonned)
+                        finish = True
+                    else:
+                        finish = False
+                    
+            finish = False
+            Chat.config(state = DISABLED)
     
 
     # Ordre : ActionCupi / ActionLG / ActionSoso 
@@ -97,17 +121,17 @@ def TimerNuit():
         TimerBox.after(1000, TimerNuit)
     elif secNuit == 0:
         Chat.config(state = NORMAL)
-        Chat.insert(END, DeadList + '\n')
+        Chat.insert(END, DeadList)
         if Player not in PlayerList:
-            Chat.insert(END, "- Joueur" + "(" + Joueur + ")" +'\n')
+            Chat.insert(END, "- Joueur" + "(" + Joueur + ")" +'\n' +'\n')
         if Player1 not in PlayerList:
-            Chat.insert(END, "- Ordi1" + "(" + Ordi1 + ")" + '\n')
+            Chat.insert(END, "- Ordi1" + "(" + Ordi1 + ")" + '\n' +'\n')
         if Player2 not in PlayerList:
-            Chat.insert(END, "- Ordi2" + "(" + Ordi2 + ")" + '\n')
+            Chat.insert(END, "- Ordi2" + "(" + Ordi2 + ")" + '\n' +'\n')
         if Player3 not in PlayerList:
-            Chat.insert(END, "- Ordi3" + "(" + Ordi3 + ")" + '\n')
+            Chat.insert(END, "- Ordi3" + "(" + Ordi3 + ")" + '\n' +'\n')
         if Player4 not in PlayerList:
-            Chat.insert(END, "- Ordi4" + "(" + Ordi4 + ")" + '\n')
+            Chat.insert(END, "- Ordi4" + "(" + Ordi4 + ")" + '\n' +'\n')
 
         Chat.insert(END, Vote + '\n')
         Chat.config(state = DISABLED)
@@ -348,78 +372,124 @@ def Vote(Player):
 def Love(Player):
     global JoueurIsLove,Ordi1IsLove,Ordi2IsLove,Ordi3IsLove,Ordi4IsLove,AlreadyPlayedCupi
     AlreadyPlayedCupi = True
-    for Player in PlayerList:
+    #for Player in PlayerList:
 
-        if Joueur == 'Cupidon':
-            JoueurIsLove = True
+    if Joueur == 'Cupidon':
+        JoueurIsLove = True
             
-            if Player == 'Ordi1':
-                Ordi1IsLove = True
-            elif Player == 'Ordi2':
-                Ordi2IsLove = True
-            elif Player == 'Ordi3':
-                Ordi3IsLove = True
-            elif Player == 'Ordi4':
-                Ordi4IsLove = True
-
-        if Ordi1 == 'Cupidon':
+        if Player == 'Ordi1':
             Ordi1IsLove = True
-
-            
-            if Player == 'Joueur':
-                JoueurIsLove = True
-            elif Player == 'Ordi1':
-                Ordi1IsLove = True
-            elif Player == 'Ordi2':
-                Ordi2IsLove = True
-            elif Player == 'Ordi3':
-                Ordi3IsLove = True
-            elif Player == 'Ordi4':
-                Ordi4IsLove = True
-
-            
-
-        if Ordi2 == 'Cupidon':
+            Chat.config(state = NORMAL)
+            Chat.insert(END, "[Privé] Vous êtes amoureux de Ordi1 ! Si l'un de vous vient à mourir, l'autre ne pourra supporter cette souffrance et se suiciedera immédiatement.." + '\n')
+            Chat.config(state = DISABLED)
+                
+        elif Player == 'Ordi2':
             Ordi2IsLove = True
-
-            if Player == 'Joueur':
-                JoueurIsLove = True
-            elif Player == 'Ordi1':
-                Ordi1IsLove = True
-            elif Player == 'Ordi3':
-                Ordi3IsLove = True
-            elif Player == 'Ordi4':
-                Ordi4IsLove = True
-
-        if Ordi3 == 'Cupidon':
+            Chat.config(state = NORMAL)
+            Chat.insert(END, "[Privé] Vous êtes amoureux de Ordi2 ! Si l'un de vous vient à mourir, l'autre ne pourra supporter cette souffrance et se suiciedera immédiatement.." + '\n')
+            Chat.config(state = DISABLED)
+            
+        elif Player == 'Ordi3':
             Ordi3IsLove = True
+            Chat.config(state = NORMAL)
+            Chat.insert(END, "[Privé] Vous êtes amoureux de Ordi3 ! Si l'un de vous vient à mourir, l'autre ne pourra supporter cette souffrance et se suiciedera immédiatement.." + '\n')
+            Chat.config(state = DISABLED)
+        elif Player == 'Ordi4':
+            Ordi4IsLove = True
+            Chat.config(state = NORMAL)
+            Chat.insert(END, "[Privé] Vous êtes amoureux de Ordi4 ! Si l'un de vous vient à mourir, l'autre ne pourra supporter cette souffrance et se suiciedera immédiatement.." + '\n')
+            Chat.config(state = DISABLED)
 
-            if Player == 'Joueur':
-                JoueurIsLove = True
-            elif Player == 'Ordi1':
-                Ordi1IsLove = True
-            elif Player == 'Ordi2':
-                Ordi2IsLove = True
-            elif Player == 'Ordi4':
-                Ordi4IsLove = True
 
-        if Ordi4 == 'Cupidon':
+    elif Ordi1 == 'Cupidon':
+        Ordi1IsLove = True
+        print('debug Ordi1')
+            
+        if Player == 'Joueur':
+            print("Joueur",Player)
+            JoueurIsLove = True
+            Chat.config(state = NORMAL)
+            Chat.insert(END, "[Privé] Vous êtes amoureux de Ordi1 ! Si l'un de vous vient à mourir, l'autre ne pourra supporter cette souffrance et se suiciedera immédiatement.." + '\n')
+            Chat.config(state = DISABLED)
+        elif Player == 'Ordi2':
+            print("Ordi2",Player)
+            Ordi2IsLove = True
+        elif Player == 'Ordi3':
+            print("Ordi3",Player)
+            Ordi3IsLove = True
+        elif Player == 'Ordi4':
+            print("Ordi4",Player)
             Ordi4IsLove = True
 
-            if Player == 'Joueur':
-                JoueurIsLove = True
-            elif Player == 'Ordi1':
-                Ordi1IsLove = True
-            elif Player == 'Ordi2':
-                Ordi2IsLove = True
-            elif Player == 'Ordi3':
-                Ordi3IsLove = True
+            
+
+    elif Ordi2 == 'Cupidon':
+        Ordi2IsLove = True
+        print('debug Ordi2')
+
+        if Player == 'Joueur':
+            print("Ordi2",Player)
+            JoueurIsLove = True
+            Chat.config(state = NORMAL)
+            Chat.insert(END, "[Privé] Vous êtes amoureux de Ordi2 ! Si l'un de vous vient à mourir, l'autre ne pourra supporter cette souffrance et se suiciedera immédiatement.." + '\n')
+            Chat.config(state = DISABLED)
+        elif Player == 'Ordi1':
+            print("Ordi1",Player)
+            Ordi1IsLove = True
+        elif Player == 'Ordi3':
+            print("Ordi3",Player)
+            Ordi3IsLove = True
+        elif Player == 'Ordi4':
+            print("Ordi4",Player)
+            Ordi4IsLove = True
+
+    elif Ordi3 == 'Cupidon':
+        Ordi3IsLove = True
+        print('debug Ordi3')
+
+        if Player == 'Joueur':
+            print("Ord3",Player)
+            JoueurIsLove = True
+            Chat.config(state = NORMAL)
+            Chat.insert(END, "[Privé] Vous êtes amoureux de Ordi3 ! Si l'un de vous vient à mourir, l'autre ne pourra supporter cette souffrance et se suiciedera immédiatement.." + '\n')
+            Chat.config(state = DISABLED)
+        elif Player == 'Ordi1':
+            print("Ordi1",Player)
+            Ordi1IsLove = True
+        elif Player == 'Ordi2':
+            print("Ordi2",Player)
+            Ordi2IsLove = True
+        elif Player == 'Ordi4':
+            print("Ordi4",Player)
+            Ordi4IsLove = True
+
+    elif Ordi4 == 'Cupidon':
+        Ordi4IsLove = True
+        print('debug Ordi4')
+
+        if Player == 'Joueur':
+            print("Ordi4",Player)
+            JoueurIsLove = True
+            Chat.config(state = NORMAL)
+            Chat.insert(END, "[Privé] Vous êtes amoureux de Ordi4 ! Si l'un de vous vient à mourir, l'autre ne pourra supporter cette souffrance et se suiciedera immédiatement.." + '\n')
+            Chat.config(state = DISABLED)
+        elif Player == 'Ordi1':
+            print("Ordi1",Player)
+            Ordi1IsLove = True
+        elif Player == 'Ordi2':
+            print("Ordi2",Player)
+            Ordi2IsLove = True
+        elif Player == 'Ordi3':
+            print("Ordi3",Player)
+            Ordi3IsLove = True
     
     
 
 def Kill(Player):
     global Ordi1IsLove,Ordi2IsLove,Ordi3IsLove,Ordi4IsLove, AlreadyPlayedLG, AlreadyPlayedCupi, AlreadyPlayedSoso
-    PlayerList.remove(Player)
+    print(Player)
+    if Player in PlayerList:
+        PlayerList.remove(Player)
     CanPlay = False
     if Joueur == "LoupGarou":
         AlreadyPlayedLG = True
@@ -430,48 +500,64 @@ def Kill(Player):
 
     if Ordi1IsLove == True:
         if Ordi1 not in PlayerList:
-            if JoueurisLove == True:
-                PlayerList.remove(Joueur)
+            if JoueurIsLove == True:
+                if Player in PlayerList:
+                    PlayerList.remove(Joueur)
             if Ordi2IsLove == True:
-                PlayerList.remove(Ordi2)
+                if Player in PlayerList:
+                    PlayerList.remove(Ordi2)
             if Ordi3IsLove == True:
-                PlayerList.remove(Ordi3)
+                if Player in PlayerList:
+                    PlayerList.remove(Ordi3)
             if Ordi4IsLove == True:
-                PlayerList.remove(Ordi4)
+                if Player in PlayerList:
+                    PlayerList.remove(Ordi4)
                 
             
     if Ordi2IsLove == True:
         if Ordi2 not in PlayerList:
-            if JoueurisLove == True:
-                PlayerList.remove(Joueur)
-            if Ord1IsLove == True:
-                PlayerList.remove(Ordi1)
+            if JoueurIsLove == True:
+                if Player in PlayerList:
+                    PlayerList.remove(Joueur)
+            if Ordi1IsLove == True:
+                if Player in PlayerList:
+                    PlayerList.remove(Ordi1)
             if Ordi3IsLove == True:
-                PlayerList.remove(Ordi3)
+                if Player in PlayerList:
+                    PlayerList.remove(Ordi3)
             if Ordi4IsLove == True:
-                PlayerList.remove(Ordi4)
+                if Player in PlayerList:
+                    PlayerList.remove(Ordi4)
 
     if Ordi3IsLove == True:
         if Ordi3 not in PlayerList:
-            if JoueurisLove == True:
-                PlayerList.remove(Joueur)
+            if JoueurIsLove == True:
+                if Player in PlayerList:
+                    PlayerList.remove(Joueur)
             if Ordi1IsLove == True:
-                PlayerList.remove(Ordi1)
+                if Player in PlayerList:
+                    PlayerList.remove(Ordi1)
             if Ordi2IsLove == True:
-                PlayerList.remove(Ordi2)
+                if Player in PlayerList:
+                    PlayerList.remove(Ordi2)
             if Ordi4IsLove == True:
-                PlayerList.remove(Ordi4)
+                if Player in PlayerList:
+                    PlayerList.remove(Ordi4)
         
     if Ordi4IsLove == True:
         if Ordi4 not in PlayerList:
-            if JoueurisLove == True:
-                PlayerList.remove(Joueur)
+            if JoueurIsLove == True:
+                if Player in PlayerList:
+                    PlayerList.remove(Joueur)
             if Ordi1IsLove == True:
-                PlayerList.remove(Ordi1)
+                if Player in PlayerList:
+                    PlayerList.remove(Ordi1)
             if Ordi2IsLove == True:
-                PlayerList.remove(Ordi2)
+                if Player in PlayerList:
+                    PlayerList.remove(Ordi2)
             if Ordi3IsLove == True:
-                PlayerList.remove(Ordi3)
+                if Player in PlayerList:
+                    PlayerList.remove(Ordi3)
 
 
 #---------------------------------------------------#
