@@ -204,10 +204,11 @@ def TimerNuit():
         Chat.config(state = NORMAL)
         Chat.insert(END, "--------------------------------------------------------------------------------------------------------------" + '\n')
         Chat.insert(END, "Le jour se lève sur le village de Thiercelieux..."+ '\n')
-        Ligne = float(Chat.index('end'))-1.0
-        Chat.insert(END, "Le corbeau a posé sa malédiction sur "+ InfoCursed +"..."+ '\n' + '\n')
-        Chat.tag_add("CorbeauCurse", Ligne, Ligne + 0.42)
-        Chat.tag_config("CorbeauCurse", foreground="#0000ff", font=("Arial", 12, "bold")) 
+        if 'Corbeau' in PlayerList:
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, "Le corbeau a posé sa malédiction sur "+ InfoCursed +"..."+ '\n' + '\n')
+            Chat.tag_add("CorbeauCurse", Ligne, Ligne + 0.42)
+            Chat.tag_config("CorbeauCurse", foreground="#0000ff", font=("Arial", 12, "bold"))  
         
         
         
