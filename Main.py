@@ -13,12 +13,6 @@ def Main():
 
     PlayerBox.config(state = NORMAL)
     PlayerBox.insert("1.0", texte, "texte")
-    PlayerBox.insert("2.0", J1, "J1")
-    PlayerBox.insert("3.0", O1, "O1")
-    PlayerBox.insert("4.0", O2, "O2")
-    PlayerBox.insert("5.0", O3, "O3")
-    PlayerBox.insert("6.0", O4, "O4")
-    PlayerBox.insert("7.0", O5, "O5")
     
     PlayerBox.config(state = DISABLED)
 
@@ -54,7 +48,7 @@ vous mourrez.""" + '\n')
         
     
 def TimerNuit():
-    global JoueurIsProtect, Ordi1IsProtect, Ordi2IsProtect, Ordi3IsProtect, Ordi4IsProtect, Ordi5IsProtect, texte, secNuit, isNuit, CanPlayLG, CanPlaySoso, CanPlaySalva, CanPlayCorbac, CanPlayChassou, AlreadyPlayedSalva, AlreadyPlayedCorbac, AlreadyPlayedSoso, AlreadyPlayedChassou, finish
+    global InfoCursed, JoueurIsProtect, Ordi1IsProtect, Ordi2IsProtect, Ordi3IsProtect, Ordi4IsProtect, Ordi5IsProtect, texte, secNuit, isNuit, CanPlayLG, CanPlaySoso, CanPlaySalva, CanPlayCorbac, CanPlayChassou, AlreadyPlayedSalva, AlreadyPlayedCorbac, AlreadyPlayedSoso, AlreadyPlayedChassou, finish
     BackGround.create_image(400, 230, image=FondNuit)
     
     if secNuit == 55:
@@ -142,6 +136,20 @@ def TimerNuit():
             random.shuffle(PlayerList)
             Cursed = random.choice(PlayerList)
             Vote(Cursed)
+            if Joueur == Cursed:
+                InfoCursed = 'Joueur'
+            elif ordi1 == Cursed:
+                InfoCursed = 'Ordi1'
+            elif ordi2 == Cursed:
+                InfoCursed = 'Ordi2'
+            elif ordi3 == Cursed:
+                InfoCursed = 'Ordi3'
+            elif ordi4 == Cursed:
+                InfoCursed = 'Ordi4'
+            elif ordi5 == Cursed:
+                InfoCursed = 'Ordi5'
+
+                
             AlreadyPlayedCorbac = True
 
         Chat.yview()
@@ -170,6 +178,15 @@ def TimerNuit():
         Ordi5IsProtect = False
         
         Chat.config(state = NORMAL)
+        Chat.insert(END, "--------------------------------------------------------------------------------------------------------------" + '\n')
+        Chat.insert(END, "Le jour se lève sur le village de Thiercelieux..."+ '\n')
+        Ligne = float(Chat.index('end'))-1.0
+        Chat.insert(END, "Le corbeau a posé sa malédiction sur "+ InfoCursed +"..."+ '\n' + '\n')
+        Chat.tag_add("CorbeauCurse", Ligne, Ligne + 0.42)
+        Chat.tag_config("CorbeauCurse", foreground="#0000ff", font=("Arial", 12, "bold")) 
+        
+        
+        
         Chat.insert(END, DeadList)
         if Joueur not in PlayerList:
             Chat.insert(END, "- Joueur" + "(" + Joueur + ")" +'\n' +'\n')
@@ -277,24 +294,53 @@ def TimerNuit():
         
         if ordi1 in PlayerList:
             Choix = random.choice(PlayerList)
-            print(Choix)
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, "Ordi1 : Je vote contre" +""+", il me semble louche...\n")
+            Chat.tag_add("Ordi1", Ligne, Ligne + 0.7)
+            Chat.tag_config("Ordi1", foreground="#FF8000", font=("Arial", 12, "bold")) 
             Vote(Choix)
+            Chat.insert(END, "Ordi1 vote contre"+"\n")
+            Chat.yview()
+            
         if ordi2 in PlayerList:
             Choix = random.choice(PlayerList)
-            print(Choix)
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, "Ordi2 : Je vote contre toi" +""+", je sais que tu es un Loup !!!\n")
+            Chat.tag_add("Ordi2", Ligne, Ligne + 0.7)
+            Chat.tag_config("Ordi2", foreground="#FF8000", font=("Arial", 12, "bold")) 
             Vote(Choix)
+            Chat.insert(END, "Ordi2 vote contre"+"\n")
+            Chat.yview()
+            
         if ordi3 in PlayerList:
             Choice = random.choice(PlayerList)
-            print(Choice)
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, "Ordi3 : J'ai des gros doutes. Je te vote"+""+".\n")
+            Chat.tag_add("Ordi3", Ligne, Ligne + 0.7)
+            Chat.tag_config("Ordi3", foreground="#FF8000", font=("Arial", 12, "bold")) 
             Vote(Choice)
+            Chat.insert(END, "Ordi3 vote contre"+"\n")
+            Chat.yview()
+            
         if ordi4 in PlayerList:
             Choice = random.choice(PlayerList)
-            print(Choice)
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, "Ordi4 : Votez" +""+", il est très suspect !!!!\n")
+            Chat.tag_add("Ordi4", Ligne, Ligne + 0.7)
+            Chat.tag_config("Ordi4", foreground="#FF8000", font=("Arial", 12, "bold")) 
             Vote(Choice)
+            Chat.insert(END, "Ordi4 vote contre"+"\n")
+            Chat.yview()
+            
         if ordi5 in PlayerList:
             Choice = random.choice(PlayerList)
-            print(Choice)
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, "Ordi5 : Obligé que " +""+", est un Loup...\n")
+            Chat.tag_add("Ordi5", Ligne, Ligne + 0.7)
+            Chat.tag_config("Ordi5", foreground="#FF8000", font=("Arial", 12, "bold")) 
             Vote(Choice)
+            Chat.insert(END, "Ordi5 vote contre"+"\n")
+            Chat.yview()
 
 
 
@@ -425,6 +471,7 @@ def StopChat(event):
 #---------------------------------------------------#
 
 def Command(EntryText):
+    global Cursed
     if EntryText != None: #Si le texte n'est vide
         if EntryText[0] == '.': #Si le texte commence par un point, on le considère comme une commande (si elle existe)
             
@@ -438,13 +485,13 @@ def Command(EntryText):
                     Vote(EntryText)
                     
             #Début du message Chat
-                    VotedMessage = "Vous avez voté contre " + EntryText + '.' #Le message à envoyer
+                    VotedMessage = "Vous avez voté contre " + EntryText + '. \n' #Le message à envoyer
                     Chat.config(state=NORMAL) # On 'ouvre' le chat
                     if Chat.index('end') != None:
                         Ligne = float(Chat.index('end'))-1.0 # On définit la position du message
                         Chat.insert(END, VotedMessage + '\n') #On l'insert dans le Chat
-                        Chat.tag_add('Start', Ligne, Ligne + 0.100) #On le repère avec Ligne (position)
-                        Chat.tag_config('Start', foreground="#713070", font=("Arial", 15, "bold")) #On lui donne une couleur, taille
+                        Chat.tag_add('Voted', Ligne, Ligne + 0.22) #On le repère avec Ligne (position)
+                        Chat.tag_config('Voted', foreground="#713070", font=("Arial", 15, "bold")) #On lui donne une couleur, taille
                         Chat.config(state=DISABLED)#Et on 'ferme' le chat
                         Chat.yview(END)
             #Fin du Message Chat
@@ -471,8 +518,8 @@ def Command(EntryText):
                                 if Chat.index('end') != None:
                                     Ligne = float(Chat.index('end'))-1.0 # On définit la position du message
                                     Chat.insert(END, KillMessage + '\n') #On l'insert dans le Chat
-                                    Chat.tag_add('Start', Ligne, Ligne + 0.100) #On le repère avec Ligne (position)
-                                    Chat.tag_config('Start', foreground="#ED0000", font=("Arial", 12, "bold")) #On lui donne une couleur, taille
+                                    Chat.tag_add('Killed', Ligne, Ligne + 0.100) #On le repère avec Ligne (position)
+                                    Chat.tag_config('Killed', foreground="#ED0000", font=("Arial", 12, "bold")) #On lui donne une couleur, taille
                                     Chat.config(state=DISABLED)#Et on 'ferme' le chat
                                     Chat.yview(END)
 
@@ -499,8 +546,8 @@ def Command(EntryText):
                         if Chat.index('end') != None:
                             Ligne = float(Chat.index('end'))-1.0 # On définit la position de la première lettre
                             Chat.insert(END, RevengeMessage + '\n') #On l'insere dans le Chat
-                            Chat.tag_add('Start', Ligne, Ligne + 0.99) #On le repère avec Ligne (position)
-                            Chat.tag_config('Start',foreground="#0000ff", font=("Arial", 12, "bold")) #On lui donne une couleur, taille
+                            Chat.tag_add('Revenged', Ligne, Ligne + 0.99) #On le repère avec Ligne (position)
+                            Chat.tag_config('Revenged',foreground="#0000ff", font=("Arial", 12, "bold")) #On lui donne une couleur, taille
                             Chat.config(state=DISABLED)#Et on 'ferme' le chat
                             Chat.yview(END)
                     else:
@@ -520,14 +567,15 @@ def Command(EntryText):
                         EntryText = EntryText.replace(".curse ", '')
                         if EntryText in InfoList:
                             Vote(EntryText)
+                            Cursed = EntryText
 
                             CurseMessage = "Vous maudissez " + EntryText+ ', il aura 1 vote au levé du jour.'
                             Chat.config(state=NORMAL)
                             if Chat.index('end') != None:
                                 Ligne = float(Chat.index('end'))-1.0 # On définit la position de la première lettre
                                 Chat.insert(END, CurseMessage + '\n') #On l'insere dans le Chat
-                                Chat.tag_add('Start', Ligne, Ligne + 0.99) #On le repère avec Ligne (position)
-                                Chat.tag_config('Start', foreground="#0000ff",font=("Arial", 12, "bold")) #On lui donne une couleur, taille
+                                Chat.tag_add('Cursed', Ligne, Ligne + 0.99) #On le repère avec Ligne (position)
+                                Chat.tag_config('Cursed', foreground="#0000ff",font=("Arial", 12, "bold")) #On lui donne une couleur, taille
                                 Chat.config(state=DISABLED)#Et on 'ferme' le chat
                                 Chat.yview(END)
 
@@ -556,8 +604,8 @@ def Command(EntryText):
                             if Chat.index('end') != None:
                                 Ligne = float(Chat.index('end'))-1.0 # On définit la position de la première lettre
                                 Chat.insert(END, ProtectMessage + '\n') #On l'insere dans le Chat
-                                Chat.tag_add('Start', Ligne, Ligne + 0.99) #On le repère avec Ligne (position)
-                                Chat.tag_config('Start',foreground="#0000ff", font=("Arial", 12, "bold")) #On lui donne une couleur, taille
+                                Chat.tag_add('Protected', Ligne, Ligne + 0.99) #On le repère avec Ligne (position)
+                                Chat.tag_config('Protected',foreground="#0000ff", font=("Arial", 12, "bold")) #On lui donne une couleur, taille
                                 Chat.config(state=DISABLED)#Et on 'ferme' le chat
                                 Chat.yview(END)
 
@@ -716,7 +764,8 @@ O2 = "- Ordi2\n"
 O3 = "- Ordi3\n"
 O4 = "- Ordi4\n"
 O5 = "- Ordi5\n"
-texte = """Joueurs restants :\n\n"""
+
+texte = """Joueurs restants :\n""" + J1 +O1 + O2 + O3 + O4 + O5
 PlayerBox.config(state = DISABLED)
 
 
@@ -802,6 +851,7 @@ Ordi2IsVoted = 0
 Ordi3IsVoted = 0
 Ordi4IsVoted = 0
 Ordi5IsVoted = 0
+
 
 JoueurIsProtect = False
 Ordi1IsProtect = False
