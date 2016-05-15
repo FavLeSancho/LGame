@@ -22,6 +22,29 @@ def Main():
         PictureBox.create_image(75, 75, image=ImgLoupGarou)
         Chat.insert(END, RoleLG + '\n')
         Chat.insert(END, "Utilisez la commande '.kill + nom', pour éliminer un joueur." + '\n')
+        Ligne = float(Chat.index('end'))-1.0
+        if ordi1 =='LoupGarou1' or ordi1 == 'LoupGarou2':
+            Chat.insert(END, "Dans cette partie vous faites équipe avec Ordi1(LoupGarou)." + '\n')
+            Chat.tag_add("LgFriend", Ligne, Ligne + 0.77)
+            Chat.tag_config("LgFriend", foreground="#0000ff", font=("Arial", 12))
+        if ordi2 =='LoupGarou1' or ordi2 == 'LoupGarou2':
+            Chat.insert(END, "Dans cette partie vous faites équipe avec Ordi2(LoupGarou)." + '\n')
+            Chat.tag_add("LgFriend", Ligne, Ligne + 0.77)
+            Chat.tag_config("LgFriend", foreground="#0000ff", font=("Arial", 12))
+        if ordi3 =='LoupGarou1' or ordi3 == 'LoupGarou2':
+            Chat.insert(END, "Dans cette partie vous faites équipe avec Ordi3(LoupGarou)." + '\n')
+            Chat.tag_add("LgFriend", Ligne, Ligne + 0.77)
+            Chat.tag_config("LgFriend", foreground="#0000ff", font=("Arial", 12))
+        if ordi4 =='LoupGarou1' or ordi4 == 'LoupGarou2':
+            Chat.insert(END, "Dans cette partie vous faites équipe avec Ordi4(LoupGarou)." + '\n')
+            Chat.tag_add("LgFriend", Ligne, Ligne + 0.77)
+            Chat.tag_config("LgFriend", foreground="#0000ff", font=("Arial", 12))
+        if ordi5 =='LoupGarou1' or ordi5 == 'LoupGarou2':
+            Chat.insert(END, "Dans cette partie vous faites équipe avec Ordi5(LoupGarou)." + '\n')
+            Chat.tag_add("LgFriend", Ligne, Ligne + 0.77)
+            Chat.tag_config("LgFriend", foreground="#0000ff", font=("Arial", 12))
+
+        
     elif Joueur == 'Chasseur':
         PictureBox.create_image(75, 75, image=ImgChasseur)
         Chat.insert(END, RoleChassou + '\n')
@@ -516,7 +539,21 @@ def TimerJour():
         else:
            Chat.insert(END, "Le village n'arrivant pas à se décider, la nuit tombe sur Thiercelieux." + '\n')
 
-        
+        if 'Chasseur' not in PlayerList and 'Salvateur' not in PlayerList and 'Sorciere' not in PlayerList and 'Corbeau' not in PlayerList:
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, GgLg + "\n")
+            Chat.tag_add("LgEnd", Ligne, Ligne + 0.77)
+            Chat.tag_config("LgEnd", foreground="#008000", font=("Arial", 20, "bold"))
+            Chat.insert(END, "Vous pouvez relancer une partie en redémarrant le programme." + "\n")
+            return ''
+            
+        elif 'LoupGarou1' not in PlayerList and 'LoupGarou2' not in PlayerList:
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, GgVillage + "\n")
+            Chat.tag_add("VillageEnd", Ligne, Ligne + 0.77)
+            Chat.tag_config("VillageEnd", foreground="#008000", font=("Arial", 20, "bold"))
+            Chat.insert(END, "Vous pouvez relancer une partie en redémarrant le programme." + "\n")
+            return ''
             
         TimerBox['text'] = ''
         isJour = False
@@ -928,7 +965,7 @@ FondNuit = PhotoImage(file ='FondNuit.gif')
 RoleList = ['LoupGarou1','LoupGarou2','Salvateur','Sorciere','Chasseur', 'Corbeau']
 InfoList = ['Joueur', 'ordi1', 'ordi2', 'ordi3', 'ordi4','ordi5']
 
-Joueur = random.choice(RoleList)
+Joueur = 'LoupGarou1' #random.choice(RoleList)
 RoleList.remove(Joueur)
     #------------#
 ordi1 = random.choice(RoleList)
