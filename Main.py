@@ -106,7 +106,7 @@ def TimerNuit():
             while finish is False:
                 random.shuffle(PlayerList)
                 Victime = random.choice(PlayerList)
-                if Victime != 'LoupGarou1' or Victime != 'LoupGarou2':
+                if Victime != 'LoupGarou1' and Victime != 'LoupGarou2':
                     Kill(Victime)
                     AlreadyPlayedLG = True
                     finish = True
@@ -1034,7 +1034,7 @@ FondNuit = PhotoImage(file ='FondNuit.gif')
 RoleList = ['LoupGarou1','LoupGarou2','Salvateur','Sorciere','Chasseur', 'Corbeau']
 InfoList = ['Joueur', 'ordi1', 'ordi2', 'ordi3', 'ordi4','ordi5']
 
-Joueur = random.choice(RoleList)
+Joueur = 'Chasseur' #random.choice(RoleList)
 RoleList.remove(Joueur)
     #------------#
 ordi1 = random.choice(RoleList)
