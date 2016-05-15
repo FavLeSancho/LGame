@@ -205,10 +205,11 @@ def TimerNuit():
         Chat.insert(END, "--------------------------------------------------------------------------------------------------------------" + '\n')
         Chat.insert(END, "Le jour se lève sur le village de Thiercelieux..."+ '\n')
         if 'Corbeau' in PlayerList:
-            Ligne = float(Chat.index('end'))-1.0
-            Chat.insert(END, "Le corbeau a posé sa malédiction sur "+ InfoCursed +"..."+ '\n' + '\n')
-            Chat.tag_add("CorbeauCurse", Ligne, Ligne + 0.44)
-            Chat.tag_config("CorbeauCurse", foreground="#0000ff", font=("Arial", 12, "bold")) 
+            if InfoCursed != '':
+                Ligne = float(Chat.index('end'))-1.0
+                Chat.insert(END, "Le corbeau a posé sa malédiction sur "+ InfoCursed +"..."+ '\n' + '\n')
+                Chat.tag_add("CorbeauCurse", Ligne, Ligne + 0.44)
+                Chat.tag_config("CorbeauCurse", foreground="#0000ff", font=("Arial", 12, "bold")) 
         
         
         
@@ -258,7 +259,7 @@ def TimerNuit():
         if Joueur not in PlayerList:
             Ligne = float(Chat.index('end'))-1.0
             Chat.insert(END, Death +'\n')
-            Chat.tag_add("NobodyDied", Ligne, Ligne + 0.31)
+            Chat.tag_add("NobodyDied", Ligne, Ligne + 0.99)
             Chat.tag_config("NobodyDied", foreground="#0000ff", font=("Arial", 12, "bold")) 
             
 
@@ -655,24 +656,17 @@ def Command(EntryText):
 
             elif EntryText[:6] == '.kill ':#Commande .kill
                 if Joueur == 'LoupGarou1' or Joueur == 'LoupGarou2':
-                    print('L1')
+
                     if isJour == True:
-                        print('L2')
                         EntryText = ''
                     if CanPlayLG == False:
-                        print('L3')
                         EntryText = ''
 
                     if Joueur in PlayerList:
-                        print('L4')
                         EntryText = EntryText.replace("\n", '') 
                         EntryText = EntryText.replace(".kill ", '')
-                        print(EntryText)
-                        print(InfoList)
                         if EntryText in InfoList:
-                            print('L5')
                             if AlreadyPlayedLG != True:
-                                print('L6')
                                 Kill(EntryText)
 
                                 KillMessage = "Vous avez décidé de tuer " + EntryText + '.\n'+'Il ne se reveillera pas demain. \n'
@@ -686,10 +680,8 @@ def Command(EntryText):
                                     Chat.yview(END)
                             
                         else:
-                            print('L7')
                             EntryText = ''
                     else:
-                        print('L8')
                         EntryText = ''
 
             elif EntryText[:9] == '.revenge ':#Commande .revenge (chasseur)
@@ -704,6 +696,7 @@ def Command(EntryText):
                     EntryText = EntryText.replace(".revenge ", '')
                     if EntryText in InfoList:
                         Kill(EntryText)
+                        CanPlayChassou == False
 
                         RevengeMessage = "Dans un élan d'éffort, vous tirez sur " + EntryText + '.'
                         Chat.config(state=NORMAL)
@@ -714,6 +707,7 @@ def Command(EntryText):
                             Chat.tag_config('Revenged',foreground="#0000ff", font=("Arial", 12, "bold")) #On lui donne une couleur, taille
                             Chat.config(state=DISABLED)#Et on 'ferme' le chat
                             Chat.yview(END)
+                            EntryText = ''
                     else:
                         EntryText = ''
                 else:
@@ -835,22 +829,16 @@ def Command(EntryText):
 def Shield(Target):
     global JoueurIsProtect, Ordi1IsProtect, Ordi2IsProtect, Ordi3IsProtect, Ordi4IsProtect, Ordi5IsProtect
     if Target == Joueur or Target == 'Joueur':
-        print('Joueur')
         JoueurIsProtect = True
     elif Target == ordi1 or Target == 'ordi1':
-        print('Ordi1')
         Ordi1IsProtect = True
     elif Target == ordi2 or Target == 'ordi2':
-        print('Ordi2')
         Ordi2IsProtect = True
     elif Target == ordi3 or Target == 'ordi3':
-        print('Ordi3')
         Ordi3IsProtect = True
     elif Target == ordi4 or Target == 'ordi4':
-        print('Ordi4')
         Ordi4IsProtect = True
     elif Target == ordi5 or Target == 'ordi5':
-        print('Ordi5')
         Ordi5IsProtect = True
     
 
@@ -1043,6 +1031,7 @@ AlreadyPlayedChassou = False
 AlreadyPlayedSalva = False
 AlreadyPlayedCorbac = False
 finish = False
+InfoCursed = ''
 #---------------------------------------------------#
 #----------------     DIALOGUES     ----------------#
 #---------------------------------------------------#
