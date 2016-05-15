@@ -928,7 +928,7 @@ FondNuit = PhotoImage(file ='FondNuit.gif')
 RoleList = ['LoupGarou1','LoupGarou2','Salvateur','Sorciere','Chasseur', 'Corbeau']
 InfoList = ['Joueur', 'ordi1', 'ordi2', 'ordi3', 'ordi4','ordi5']
 
-Joueur = 'Salvateur' #random.choice(RoleList)
+Joueur = random.choice(RoleList)
 RoleList.remove(Joueur)
     #------------#
 ordi1 = random.choice(RoleList)
