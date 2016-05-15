@@ -12,12 +12,19 @@ def Main():
     Chat.tag_config("start", foreground="#008000", font=("Arial", 20)) #, "bold"
 
     PlayerBox.config(state = NORMAL)
-    PlayerBox.insert("0.0", texte, "texte")
+    PlayerBox.insert("1.0", texte, "texte")
+    PlayerBox.insert("2.0", J1, "J1")
+    PlayerBox.insert("3.0", O1, "O1")
+    PlayerBox.insert("4.0", O2, "O2")
+    PlayerBox.insert("5.0", O3, "O3")
+    PlayerBox.insert("6.0", O4, "O4")
+    PlayerBox.insert("7.0", O5, "O5")
+    
     PlayerBox.config(state = DISABLED)
 
     
 
-    if Joueur == 'LoupGarou':
+    if Joueur == 'LoupGarou1' or Joueur == 'LoupGarou2':
         PictureBox.create_image(75, 75, image=ImgLoupGarou)
         Chat.insert(END, RoleLG + '\n')
         Chat.insert(END, "Utilisez la commande '.kill + nom', pour éliminer un joueur." + '\n')
@@ -47,7 +54,7 @@ vous mourrez.""" + '\n')
         
     
 def TimerNuit():
-    global texte, secNuit, isNuit, CanPlayLG, CanPlaySoso, CanPlaySalva, CanPlayCorbac, CanPlayChassou, AlreadyPlayedSalva, AlreadyPlayedCorbac, AlreadyPlayedSoso, AlreadyPlayedChassou, finish
+    global JoueurIsProtect, Ordi1IsProtect, Ordi2IsProtect, Ordi3IsProtect, Ordi4IsProtect, Ordi5IsProtect, texte, secNuit, isNuit, CanPlayLG, CanPlaySoso, CanPlaySalva, CanPlayCorbac, CanPlayChassou, AlreadyPlayedSalva, AlreadyPlayedCorbac, AlreadyPlayedSoso, AlreadyPlayedChassou, finish
     BackGround.create_image(400, 230, image=FondNuit)
     
     if secNuit == 55:
@@ -75,14 +82,14 @@ def TimerNuit():
         Chat.insert(END, ActionLG + '\n')
         Chat.tag_add("LGText", Ligne, Ligne + 0.47)
         Chat.tag_config("LGText", foreground="#FF8000", font=("Arial", 12, "bold")) 
-        if Joueur == 'LoupGarou':
+        if Joueur == 'LoupGarou1' or Joueur == 'LoupGarou2':
             CanPlayLG = True
             Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
         else:
             while finish is False:
                 random.shuffle(PlayerList)
                 Victime = random.choice(PlayerList)
-                if Victime != 'LoupGarou':
+                if Victime != 'LoupGarou1' or Victime != 'LoupGarou2':
                     Kill(Victime)
                     AlreadyPlayedLG = True
                     finish = True
@@ -154,50 +161,57 @@ def TimerNuit():
         AlreadyPlayedLG = False
         AlreadyPlayedSalva = False
         AlreadyPlayedCorbac = False
+
+        JoueurIsProtect = False
+        Ordi1IsProtect = False
+        Ordi2IsProtect = False
+        Ordi3IsProtect = False
+        Ordi4IsProtect = False
+        Ordi5IsProtect = False
         
         Chat.config(state = NORMAL)
         Chat.insert(END, DeadList)
         if Joueur not in PlayerList:
             Chat.insert(END, "- Joueur" + "(" + Joueur + ")" +'\n' +'\n')
             PlayerBox.config(state = NORMAL)
-            texte -= J1
-            PlayerBox.insert("0.0", texte, "texte")
+            PlayerBox.delete("2.0", "2.11")
             PlayerBox.config(state = DISABLED)
             
         if ordi1 not in PlayerList:
             Chat.insert(END, "- Ordi1" + "(" + ordi1 + ")" + '\n' +'\n')
             PlayerBox.config(state = NORMAL)
-            texte -= O1
-            PlayerBox.insert("0.0", texte, "texte")
+            PlayerBox.delete("3.0", "3.11")
             PlayerBox.config(state = DISABLED)
             
         if ordi2 not in PlayerList:
             Chat.insert(END, "- Ordi2" + "(" + ordi2 + ")" + '\n' +'\n')
             PlayerBox.config(state = NORMAL)
-            texte -= O2
-            PlayerBox.insert("0.0", texte, "texte")
+            PlayerBox.delete("4.0", "4.11")
             PlayerBox.config(state = DISABLED)
             
         if ordi3 not in PlayerList:
             Chat.insert(END, "- Ordi3" + "(" + ordi3 + ")" + '\n' +'\n')
             PlayerBox.config(state = NORMAL)
-            texte -= O3
-            PlayerBox.insert("0.0", texte, "texte")
+            PlayerBox.delete("5.0", "5.11")
             PlayerBox.config(state = DISABLED)
             
         if ordi4 not in PlayerList:
             Chat.insert(END, "- Ordi4" + "(" + ordi4 + ")" + '\n' +'\n')
             PlayerBox.config(state = NORMAL)
-            texte -= O4
-            PlayerBox.insert("0.0", texte, "texte")
+            PlayerBox.delete("6.0", "6.11")
             PlayerBox.config(state = DISABLED)
             
         if ordi5 not in PlayerList:
             Chat.insert(END, "- Ordi5" + "(" + ordi5 + ")" + '\n' +'\n')
             PlayerBox.config(state = NORMAL)
-            texte -= O5
-            PlayerBox.insert("0.0", texte, "texte")
+            PlayerBox.delete("7.0", "7.11")
             PlayerBox.config(state = DISABLED)
+
+        if Joueur in PlayerList and ordi1 in PlayerList and ordi2 in PlayerList and ordi3 in PlayerList and ordi4 in PlayerList and ordi5 in PlayerList :
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, "Personne n'est mort !" + '\n' +'\n')
+            Chat.tag_add("NobodyDied", Ligne, Ligne + 0.31)
+            Chat.tag_config("NobodyDied", foreground="#008000", font=("Arial", 14, "bold")) 
 
 
 
@@ -219,21 +233,40 @@ def TimerNuit():
                     Ligne = float(Chat.index('end'))-1.0
                     if Killed == Joueur:
                         Chat.insert(END, "PAN ! Joueur"+"("+ Killed +") a été tué par le chasseur." + '\n')
+                        PlayerBox.config(state = NORMAL)
+                        PlayerBox.delete("2.0", "2.11")
+                        PlayerBox.config(state = DISABLED)
 
                     elif Killed == ordi1:
                         Chat.insert(END, "PAN ! Ordi1"+"("+ Killed +") a été tué par le chasseur." + '\n')
+                        PlayerBox.config(state = NORMAL)
+                        PlayerBox.delete("3.0", "3.11")
+                        PlayerBox.config(state = DISABLED)
 
                     elif Killed == ordi2:
                         Chat.insert(END, "PAN ! Ordi2"+"("+ Killed +") a été tué par le chasseur." + '\n')
+                        PlayerBox.config(state = NORMAL)
+                        PlayerBox.delete("4.0", "4.11")
+                        PlayerBox.config(state = DISABLED)
 
                     elif Killed == ordi3:
                         Chat.insert(END, "PAN ! Ordi3"+"("+ Killed +") a été tué par le chasseur." + '\n')
+                        PlayerBox.config(state = NORMAL)
+                        PlayerBox.delete("5.0", "5.11")
+                        PlayerBox.config(state = DISABLED)
 
                     elif Killed == ordi4:
                         Chat.insert(END, "PAN ! Ordi4"+"("+ Killed +") a été tué par le chasseur." + '\n')
+                        PlayerBox.config(state = NORMAL)
+                        PlayerBox.delete("6.0", "6.11")
+                        PlayerBox.config(state = DISABLED)
 
                     else:
                         Chat.insert(END, "PAN ! Ordi5"+"("+ Killed +") a été tué par le chasseur." + '\n')
+                        PlayerBox.config(state = NORMAL)
+                        PlayerBox.delete("7.0", "7.11")
+                        PlayerBox.config(state = DISABLED)
+                        
                     Chat.tag_add("ChassouText", Ligne, Ligne + 0.61)
                     Chat.tag_config("ChassouText", foreground="#008000", font=("Arial", 14, "bold")) 
                 AlreadyPlayedChassou = True
@@ -288,25 +321,43 @@ def TimerJour():
         Chat.config(state = NORMAL)
         if JoueurIsVoted > Ordi1IsVoted and JoueurIsVoted > Ordi2IsVoted and JoueurIsVoted > Ordi3IsVoted and JoueurIsVoted > Ordi4IsVoted and JoueurIsVoted > Ordi5IsVoted:
             PlayerList.remove(Joueur)
+            PlayerBox.config(state = NORMAL)
+            PlayerBox.delete("2.0", "2.11")
+            PlayerBox.config(state = DISABLED)
             Chat.insert(END, "Le village a décidé d'éliminer Joueur qui était " + Joueur + ".\n")
         elif Ordi1IsVoted > JoueurIsVoted and Ordi1IsVoted > Ordi2IsVoted and Ordi1IsVoted > Ordi3IsVoted and Ordi1IsVoted > Ordi4IsVoted and Ordi1IsVoted > Ordi5IsVoted:
             PlayerList.remove(ordi1)
+            PlayerBox.config(state = NORMAL)
+            PlayerBox.delete("3.0", "3.11")
+            PlayerBox.config(state = DISABLED)
             Chat.insert(END, "Le village a décidé d'éliminer Ordi1 qui était " + ordi1 + ".\n")
 
         elif Ordi2IsVoted > JoueurIsVoted and Ordi2IsVoted > Ordi1IsVoted and Ordi2IsVoted > Ordi3IsVoted and Ordi2IsVoted > Ordi4IsVoted and Ordi2IsVoted > Ordi5IsVoted:
             PlayerList.remove(ordi2)
+            PlayerBox.config(state = NORMAL)
+            PlayerBox.delete("4.0", "4.11")
+            PlayerBox.config(state = DISABLED)
             Chat.insert(END, "Le village a décidé d'éliminer Ordi2 qui était " + ordi2 + ".\n")
 
         elif Ordi3IsVoted > JoueurIsVoted and Ordi3IsVoted > Ordi1IsVoted and Ordi3IsVoted > Ordi2IsVoted and Ordi3IsVoted > Ordi4IsVoted and Ordi3IsVoted > Ordi5IsVoted:
             PlayerList.remove(ordi3)
+            PlayerBox.config(state = NORMAL)
+            PlayerBox.delete("5.0", "5.11")
+            PlayerBox.config(state = DISABLED)
             Chat.insert(END, "Le village a décidé d'éliminer Ordi3 qui était " + ordi3 + ".\n")
 
         elif Ordi4IsVoted > JoueurIsVoted and Ordi4IsVoted > Ordi1IsVoted and Ordi4IsVoted > Ordi2IsVoted and Ordi4IsVoted > Ordi3IsVoted and Ordi4IsVoted > Ordi5IsVoted:
             PlayerList.remove(ordi4)
+            PlayerBox.config(state = NORMAL)
+            PlayerBox.delete("6.0", "6.11")
+            PlayerBox.config(state = DISABLED)
             Chat.insert(END, "Le village a décidé d'éliminer Ordi4 qui était " + ordi4 + ".\n")
 
         elif Ordi5IsVoted > JoueurIsVoted and Ordi5IsVoted > Ordi1IsVoted and Ordi5IsVoted > Ordi2IsVoted and Ordi5IsVoted > Ordi3IsVoted and Ordi5IsVoted > Ordi4IsVoted:
             PlayerList.remove(ordi5)
+            PlayerBox.config(state = NORMAL)
+            PlayerBox.delete("7.0", "7.11")
+            PlayerBox.config(state = DISABLED)
             Chat.insert(END, "Le village a décidé d'éliminer Ordi5 qui était " + ordi5 + ".\n")
 
         else:
@@ -376,14 +427,14 @@ def StopChat(event):
 def Command(EntryText):
     if EntryText != None: #Si le texte n'est vide
         if EntryText[0] == '.': #Si le texte commence par un point, on le considère comme une commande (si elle existe)
-            #Début des commandes#
             
+            #Début des commandes#
             if EntryText[:6] == '.vote ':#Commande .vote
                 if isNuit == True:
                     EntryText = ''
                 EntryText = EntryText.replace("\n", '') #On enlève le retour à la ligne (fixage de bugs)
                 EntryText = EntryText.replace(".vote ", '') #On enlève le '.vote ' pour ne reccuperer que le pseudo
-                if EntryText in PlayerList: #Si le pseudo fait partie de la liste de Joueurs
+                if EntryText in InfoList: #Si le pseudo fait partie de la liste de Joueurs
                     Vote(EntryText)
                     
             #Début du message Chat
@@ -392,7 +443,7 @@ def Command(EntryText):
                     if Chat.index('end') != None:
                         Ligne = float(Chat.index('end'))-1.0 # On définit la position du message
                         Chat.insert(END, VotedMessage + '\n') #On l'insert dans le Chat
-                        Chat.tag_add('Start', Ligne, Ligne + 1.100) #On le repère avec Ligne (position)
+                        Chat.tag_add('Start', Ligne, Ligne + 0.100) #On le repère avec Ligne (position)
                         Chat.tag_config('Start', foreground="#713070", font=("Arial", 15, "bold")) #On lui donne une couleur, taille
                         Chat.config(state=DISABLED)#Et on 'ferme' le chat
                         Chat.yview(END)
@@ -402,7 +453,7 @@ def Command(EntryText):
                     EntryText = ''
 
             elif EntryText[:6] == '.kill ':#Commande .kill
-                if Joueur == 'LoupGarou':
+                if Joueur == 'LoupGarou1' or Joueur == 'LoupGarou2':
                     if isJour == True:
                         EntryText = ''
                     if CanPlayLG == False:
@@ -411,7 +462,7 @@ def Command(EntryText):
                     if Joueur not in PlayerList:
                         EntryText = EntryText.replace("\n", '') 
                         EntryText = EntryText.replace(".kill ", '')
-                        if EntryText in PlayerList:
+                        if EntryText in InfoList:
                             if AlreadyPlayedLG != True:
                                 Kill(EntryText)
 
@@ -420,7 +471,7 @@ def Command(EntryText):
                                 if Chat.index('end') != None:
                                     Ligne = float(Chat.index('end'))-1.0 # On définit la position du message
                                     Chat.insert(END, KillMessage + '\n') #On l'insert dans le Chat
-                                    Chat.tag_add('Start', Ligne, Ligne + 1.100) #On le repère avec Ligne (position)
+                                    Chat.tag_add('Start', Ligne, Ligne + 0.100) #On le repère avec Ligne (position)
                                     Chat.tag_config('Start', foreground="#ED0000", font=("Arial", 12, "bold")) #On lui donne une couleur, taille
                                     Chat.config(state=DISABLED)#Et on 'ferme' le chat
                                     Chat.yview(END)
@@ -440,7 +491,7 @@ def Command(EntryText):
                         EntryText = ''
                     EntryText = EntryText.replace("\n", '') 
                     EntryText = EntryText.replace(".revenge ", '')
-                    if EntryText in PlayerList:
+                    if EntryText in InfoList:
                         Kill(EntryText)
 
                         RevengeMessage = "Dans un élan d'éffort, vous tirez sur " + EntryText + '.'
@@ -448,8 +499,8 @@ def Command(EntryText):
                         if Chat.index('end') != None:
                             Ligne = float(Chat.index('end'))-1.0 # On définit la position de la première lettre
                             Chat.insert(END, RevengeMessage + '\n') #On l'insere dans le Chat
-                            Chat.tag_add('Start', Ligne, Ligne + 1.100) #On le repère avec Ligne (position)
-                            Chat.tag_config('Start', font=("Arial", 12, "bold")) #On lui donne une couleur, taille
+                            Chat.tag_add('Start', Ligne, Ligne + 0.99) #On le repère avec Ligne (position)
+                            Chat.tag_config('Start',foreground="#0000ff", font=("Arial", 12, "bold")) #On lui donne une couleur, taille
                             Chat.config(state=DISABLED)#Et on 'ferme' le chat
                             Chat.yview(END)
                     else:
@@ -467,8 +518,18 @@ def Command(EntryText):
                     if Joueur in PlayerList:
                         EntryText = EntryText.replace("\n", '') 
                         EntryText = EntryText.replace(".curse ", '')
-                        if EntryText in PlayerList:
+                        if EntryText in InfoList:
                             Vote(EntryText)
+
+                            CurseMessage = "Vous maudissez " + EntryText+ ', il aura 1 vote au levé du jour.'
+                            Chat.config(state=NORMAL)
+                            if Chat.index('end') != None:
+                                Ligne = float(Chat.index('end'))-1.0 # On définit la position de la première lettre
+                                Chat.insert(END, CurseMessage + '\n') #On l'insere dans le Chat
+                                Chat.tag_add('Start', Ligne, Ligne + 0.99) #On le repère avec Ligne (position)
+                                Chat.tag_config('Start', foreground="#0000ff",font=("Arial", 12, "bold")) #On lui donne une couleur, taille
+                                Chat.config(state=DISABLED)#Et on 'ferme' le chat
+                                Chat.yview(END)
 
                         else:
                             EntryText = ''
@@ -487,8 +548,18 @@ def Command(EntryText):
                     if Joueur in PlayerList:
                         EntryText = EntryText.replace("\n", '') 
                         EntryText = EntryText.replace(".protect ", '')
-                        if EntryText in PlayerList:
+                        if EntryText in InfoList:
                             Shield(EntryText)
+
+                            ProtectMessage = "Vous protégez " + EntryText+ ", il sera protégé de l'assaut des Loups-Garous."
+                            Chat.config(state=NORMAL)
+                            if Chat.index('end') != None:
+                                Ligne = float(Chat.index('end'))-1.0 # On définit la position de la première lettre
+                                Chat.insert(END, ProtectMessage + '\n') #On l'insere dans le Chat
+                                Chat.tag_add('Start', Ligne, Ligne + 0.99) #On le repère avec Ligne (position)
+                                Chat.tag_config('Start',foreground="#0000ff", font=("Arial", 12, "bold")) #On lui donne une couleur, taille
+                                Chat.config(state=DISABLED)#Et on 'ferme' le chat
+                                Chat.yview(END)
 
                         else:
                             EntryText = ''
@@ -511,6 +582,16 @@ def Command(EntryText):
                             if AlreadyPlayedSoso != True:
                                 Kill(EntryText)
 
+                                PoisonMessage = "Vous empoisonnez " + EntryText + ", il ne se reveillera pas le lendemain."
+                                Chat.config(state=NORMAL)
+                                if Chat.index('end') != None:
+                                    Ligne = float(Chat.index('end'))-1.0 # On définit la position de la première lettre
+                                    Chat.insert(END, PoisonMessage + '\n') #On l'insere dans le Chat
+                                    Chat.tag_add('Start', Ligne, Ligne + 0.99) #On le repère avec Ligne (position)
+                                    Chat.tag_config('Start', foreground="#0000ff",font=("Arial", 12, "bold")) #On lui donne une couleur, taille
+                                    Chat.config(state=DISABLED)#Et on 'ferme' le chat
+                                    Chat.yview(END)
+
                         else:
                             EntryText = ''
                     else:
@@ -523,7 +604,7 @@ def Command(EntryText):
 
             if EntryText[:5] == '.info':
                 Chat.config(state = NORMAL)
-                Chat.insert(END, PlayerList)
+                Chat.insert(END, InfoList)
                 Chat.insert(END, '\n')
                 Chat.config(state = DISABLED)
                         
@@ -541,33 +622,33 @@ def Command(EntryText):
 
 def Shield(Target):
     global JoueurIsProtect, Ordi1IsProtect, Ordi2IsProtect, Ordi3IsProtect, Ordi4IsProtect, Ordi5IsProtect
-    if Target == Joueur:
+    if Target == Joueur or Target == 'Joueur':
         JoueurIsProtect = True
-    elif Target == ordi1:
+    elif Target == ordi1 or Target == 'ordi1':
         Ordi1IsProtect = True
-    elif Target == ordi2:
+    elif Target == ordi2 or Target == 'ordi2':
         Ordi2IsProtect = True
-    elif Target == ordi3:
+    elif Target == ordi3 or Target == 'ordi3':
         Ordi3IsProtect = True
-    elif Target == ordi4:
+    elif Target == ordi4 or Target == 'ordi4':
         Ordi4IsProtect = True
-    elif Target == ordi5:
+    elif Target == ordi5 or Target == 'ordi5':
         Ordi5IsProtect = True
     
 
 def Vote(Target):
     global JoueurIsVoted,Ordi1IsVoted,Ordi2IsVoted,Ordi3IsVoted,Ordi4IsVoted, Ordi5IsVoted
-    if Target == Joueur:
+    if Target == Joueur or Target == 'Joueur':
         JoueurIsVoted += 1
-    elif Target == ordi1:
+    elif Target == ordi1 or Target == 'ordi1':
         Ordi1IsVoted += 1
-    elif Target == ordi2:
+    elif Target == ordi2 or Target == 'ordi2':
         Ordi2IsVoted += 1
-    elif Target == ordi3:
+    elif Target == ordi3 or Target == 'ordi3':
         Ordi3IsVoted += 1
-    elif Target == ordi4:
+    elif Target == ordi4 or Target == 'ordi4':
         Ordi4IsVoted += 1
-    elif Target == ordi5:
+    elif Target == ordi5 or Target == 'ordi5':
         Ordi5IsVoted += 1
 
 
@@ -575,29 +656,35 @@ def Kill(Target):
     global JoueurIsProtect, Ordi1IsProtect, Ordi2IsProtect, Ordi3IsProtect, Ordi4IsProtect, Ordi5IsProtect
     print(Target)
     if Target in PlayerList:
-        if Target == Joueur:
+        if Target == Joueur or Target == 'Joueur':
             if JoueurIsProtect != True:
                 PlayerList.remove(Target)
+                InfoList.remove('Joueur')
 
-        elif Target == ordi1:
+        elif Target == ordi1 or Target == 'ordi1':
             if Ordi1IsProtect != True:
                 PlayerList.remove(Target)
+                InfoList.remove('ordi1')
 
-        elif Target == ordi2:
+        elif Target == ordi2 or Target == 'ordi2':
             if Ordi2IsProtect != True:
                 PlayerList.remove(Target)
+                InfoList.remove('ordi2')
 
-        elif Target == ordi3:
+        elif Target == ordi3 or Target == 'ordi3':
             if Ordi3IsProtect != True:
                 PlayerList.remove(Target)
+                InfoList.remove('ordi3')
 
-        elif Target == ordi4:
+        elif Target == ordi4 or Target == 'ordi4':
             if Ordi4IsProtect != True:
                 PlayerList.remove(Target)
+                InfoList.remove('ordi4')
 
-        elif Target == ordi5:
+        elif Target == ordi5 or Target == 'ordi5':
             if Ordi5IsProtect != True:
                 PlayerList.remove(Target)
+                InfoList.remove('ordi5')
 
 
 
@@ -629,7 +716,7 @@ O2 = "- Ordi2\n"
 O3 = "- Ordi3\n"
 O4 = "- Ordi4\n"
 O5 = "- Ordi5\n"
-texte = """Joueurs restants :\n\n""" + J1 + O1 + O2 + O3 + O4 + O5
+texte = """Joueurs restants :\n\n"""
 PlayerBox.config(state = DISABLED)
 
 
@@ -680,9 +767,10 @@ FondNuit = PhotoImage(file ='FondNuit.gif')
 #----------------GESTION DES DONNEES----------------#
 #---------------------------------------------------#
 
-RoleList = ['LoupGarou','LoupGarou','Salvateur','Sorciere','Chasseur', 'Corbeau']
+RoleList = ['LoupGarou1','LoupGarou2','Salvateur','Sorciere','Chasseur', 'Corbeau']
+InfoList = ['Joueur', 'ordi1', 'ordi2', 'ordi3', 'ordi4','ordi5']
 
-Joueur = random.choice(RoleList)
+Joueur = 'Salvateur' #random.choice(RoleList)
 RoleList.remove(Joueur)
     #------------#
 ordi1 = random.choice(RoleList)
@@ -779,6 +867,7 @@ ActionSoso = "La sorcière va pouvoir utiliser ses potions."
 VictimeSoso = "[Privé] Avec vos subtiles potions vous arrivez à empoisonner [Joueur]. Il ne se reveillera pas demain..."
 
 ChoixChassou = "Le chasseur dispose de 30 secondes pour éliminer sa cible !"
+Pan = "PAN ! [Joueur]([Rôle]) a été tué par le chasseur."
 
 InfoVote = """Une fois par jour, le village décide d'éliminer un joueur qu'il croit Loup-Garou.
 Pour voter contre quelqu'un, vous devez utiliser la commande '.vote ' + nom."""
