@@ -558,7 +558,7 @@ def TimerJour():
                 if Joueur == 'Chasseur':
                     CanPlayChassou = True
                     Chat.insert(END, '[Privé] Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
-                    time.sleep(10)
+                    sleep(10)
                 else:
                     random.shuffle(PlayerList)
                     Killed = random.choice(PlayerList)
