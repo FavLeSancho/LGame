@@ -842,7 +842,7 @@ def Command(EntryText):
                     if Joueur in PlayerList:
                         EntryText = EntryText.replace("\n", '') 
                         EntryText = EntryText.replace(".poison ", '')
-                        if EntryText in PlayerList:
+                        if EntryText in InfoList:
                             if AlreadyPlayedSoso != True:
                                 Kill(EntryText)
 
