@@ -30,7 +30,7 @@ vous mourrez.""" + '\n')
     elif Joueur == 'Salvateur':
         PictureBox.create_image(75, 75, image=ImgSalvateur)
         Chat.insert(END, RoleSalva + '\n')
-        Chat.insert(END, "Utilisez la commande '.protect + nom' pour vous unir avec un joueur." + '\n')
+        Chat.insert(END, "Utilisez la commande '.protect + nom' pour proteger un joueur." + '\n')
     elif Joueur == 'Sorciere':
         PictureBox.create_image(75, 75, image=ImgSorciere)
         Chat.insert(END, RoleSoso + '\n')
@@ -38,7 +38,7 @@ vous mourrez.""" + '\n')
     else:
         PictureBox.create_image(75, 75, image=ImgCorbeau)
         Chat.insert(END, RoleCorbac + '\n')
-        Chat.insert(END, "Utilisez la commande '.curse + nom' pour éliminer un joueur." + '\n')
+        Chat.insert(END, "Utilisez la commande '.curse + nom' pour maudire un joueur." + '\n')
 
     Chat.insert(END, "--------------------------------------------------------------------------------------------------------------" + '\n')
     Chat.insert(END, Night + '\n')
@@ -52,23 +52,23 @@ def TimerNuit():
     BackGround.create_image(400, 230, image=FondNuit)
     
     if secNuit == 55:
-        Chat.config(state = NORMAL)
-        Ligne = float(Chat.index('end'))-1.0
-        Chat.insert(END, ActionSalva + '\n')
-        Chat.tag_add("SalvaText", Ligne, Ligne + 0.42)
-        Chat.tag_config("SalvaText", foreground="#FF8000", font=("Arial", 12, "bold")) 
-        if Joueur == 'Salvateur':
-            CanPlaySalva = True
-            Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
-        else:
-            random.shuffle(PlayerList)
-            Chosen = random.choice(PlayerList)
-            print("Salva:",Chosen)
-            Shield(Chosen)
-            AlreadyPlayedSalva = True
+        if 'Salvateur' in PlayerList:
+            Chat.config(state = NORMAL)
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, ActionSalva + '\n')
+            Chat.tag_add("SalvaText", Ligne, Ligne + 0.42)
+            Chat.tag_config("SalvaText", foreground="#FF8000", font=("Arial", 12, "bold")) 
+            if Joueur == 'Salvateur':
+                CanPlaySalva = True
+                Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
+            else:
+                random.shuffle(PlayerList)
+                Chosen = random.choice(PlayerList)
+                Shield(Chosen)
+                AlreadyPlayedSalva = True
 
-        Chat.yview()
-        Chat.config(state = DISABLED)
+            Chat.yview()
+            Chat.config(state = DISABLED)
 
     if secNuit == 40:
         Chat.config(state = NORMAL)
@@ -89,8 +89,8 @@ def TimerNuit():
                     finish = True
                 else:
                     finish = False
-
-        finish = False
+    
+            finish = False
         Chat.yview()
         Chat.config(state = DISABLED)
         
@@ -123,37 +123,38 @@ def TimerNuit():
             
 
     if secNuit == 15:
-        Chat.config(state = NORMAL)
+        if 'Corbeau' in PlayerList:
+            Chat.config(state = NORMAL)
             
-        Ligne = float(Chat.index('end'))-1.0
-        Chat.insert(END, ActionCorbac + '\n')
-        Chat.tag_add("CorbacText", Ligne, Ligne + 0.42)
-        Chat.tag_config("CorbacText", foreground="#FF8000", font=("Arial", 12, "bold")) 
-        if Joueur == 'Corbeau':
-            CanPlayCorbac = True
-            Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
-        else:
-            random.shuffle(PlayerList)
-            Cursed = random.choice(PlayerList)
-            Vote(Cursed)
-            if Joueur == Cursed:
-                InfoCursed = 'Joueur'
-            elif ordi1 == Cursed:
-                InfoCursed = 'Ordi1'
-            elif ordi2 == Cursed:
-                InfoCursed = 'Ordi2'
-            elif ordi3 == Cursed:
-                InfoCursed = 'Ordi3'
-            elif ordi4 == Cursed:
-                InfoCursed = 'Ordi4'
-            elif ordi5 == Cursed:
-                InfoCursed = 'Ordi5'
-
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, ActionCorbac + '\n')
+            Chat.tag_add("CorbacText", Ligne, Ligne + 0.42)
+            Chat.tag_config("CorbacText", foreground="#FF8000", font=("Arial", 12, "bold")) 
+            if Joueur == 'Corbeau':
+                CanPlayCorbac = True
+                Chat.insert(END, 'Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
+            else:
+                random.shuffle(PlayerList)
+                Cursed = random.choice(PlayerList)
+                Vote(Cursed)
+                if Joueur == Cursed:
+                    InfoCursed = 'Joueur'
+                elif ordi1 == Cursed:
+                    InfoCursed = 'Ordi1'
+                elif ordi2 == Cursed:
+                    InfoCursed = 'Ordi2'
+                elif ordi3 == Cursed:
+                    InfoCursed = 'Ordi3'
+                elif ordi4 == Cursed:
+                    InfoCursed = 'Ordi4'
+                elif ordi5 == Cursed:
+                   InfoCursed = 'Ordi5'
+    
                 
-            AlreadyPlayedCorbac = True
+                AlreadyPlayedCorbac = True
 
-        Chat.yview()
-        Chat.config(state = DISABLED)
+            Chat.yview()
+            Chat.config(state = DISABLED)
             
         
     
@@ -230,7 +231,12 @@ def TimerNuit():
             Chat.tag_add("NobodyDied", Ligne, Ligne + 0.31)
             Chat.tag_config("NobodyDied", foreground="#008000", font=("Arial", 14, "bold")) 
 
-
+        if Joueur not in PlayerList:
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, Death +'\n')
+            Chat.tag_add("NobodyDied", Ligne, Ligne + 0.31)
+            Chat.tag_config("NobodyDied", foreground="#0000ff", font=("Arial", 12, "bold")) 
+            
 
         if 'Chasseur' not in PlayerList:
             if AlreadyPlayedChassou != True:
@@ -288,9 +294,17 @@ def TimerNuit():
                     Chat.tag_config("ChassouText", foreground="#008000", font=("Arial", 14, "bold"))
                 AlreadyPlayedChassou = True
 
-                
+
+
+        if 'Chasseur' not in PlayerList and 'Salvateur' not in PlayerList and 'Sorciere' not in PlayerList and 'Corbeau' not in PlayerList and 'LoupGarou1' not in PlayerList and 'LoupGarou2' not in PlayerList:
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, RipAll + "\n")
+            Chat.tag_add("Ordi1", Ligne, Ligne + 0.77)
+            Chat.tag_config("Ordi1", foreground="#008000", font=("Arial", 20, "bold"))
+            Chat.insert(END, "Vous pouvez relancer une partie en redémarrant le programme." + "\n")
+            return ''
             
-        if 'LoupGarou1' not in PlayerList and 'LoupGarou2' not in PlayerList:
+        elif 'LoupGarou1' not in PlayerList and 'LoupGarou2' not in PlayerList:
             Ligne = float(Chat.index('end'))-1.0
             Chat.insert(END, GgVillage + "\n")
             Chat.tag_add("Ordi1", Ligne, Ligne + 0.77)
@@ -298,58 +312,141 @@ def TimerNuit():
             Chat.insert(END, "Vous pouvez relancer une partie en redémarrant le programme." + "\n")
             return ''
 
+        elif 'Chasseur' not in PlayerList and 'Salvateur' not in PlayerList and 'Sorciere' not in PlayerList and 'Corbeau' not in PlayerList:
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, GgLg + "\n")
+            Chat.tag_add("Ordi1", Ligne, Ligne + 0.77)
+            Chat.tag_config("Ordi1", foreground="#008000", font=("Arial", 20, "bold"))
+            Chat.insert(END, "Vous pouvez relancer une partie en redémarrant le programme." + "\n")
+            return ''
+        
+
         
 
         Chat.insert(END, InfoVote + '\n' + '\n')
         
         if ordi1 in PlayerList:
-            Choix = random.choice(PlayerList)
+            Choix1 = ordi1
+            while Choix1 == ordi1:
+                Choix1 = random.choice(PlayerList)
+            if Choix1 == Joueur:
+                ResultVote1 = 'Joueur'
+            elif Choix1 == ordi1:
+                ResultVote1 = 'Ordi1'
+            elif Choix1 == ordi2:
+                ResultVote1 = 'Ordi2'
+            elif Choix1 == ordi3:
+                ResultVote1 = 'Ordi3'
+            elif Choix1 == ordi4:
+                ResultVote1 = 'Ordi4'
+            elif Choix1 == ordi5:
+                ResultVote1 = 'Ordi5'
             Ligne = float(Chat.index('end'))-1.0
-            Chat.insert(END, "Ordi1 : Je vote contre" +""+", il me semble louche...\n")
+            Chat.insert(END, "Ordi1 : Je vote contre " +ResultVote1+", il me semble louche...\n")
             Chat.tag_add("Ordi1", Ligne, Ligne + 0.7)
             Chat.tag_config("Ordi1", foreground="#FF8000", font=("Arial", 12, "bold")) 
-            Vote(Choix)
-            Chat.insert(END, "Ordi1 vote contre"+"\n")
+            Vote(Choix1)
+            Chat.insert(END, "Ordi1 vote contre "+ResultVote1+"\n\n")
             Chat.yview()
             
         if ordi2 in PlayerList:
-            Choix = random.choice(PlayerList)
+            Choix2 = ordi2
+            while Choix2 == ordi2:
+                Choix2 = random.choice(PlayerList)
+            
+            if Choix2 == Joueur:
+                ResultVote2 = 'Joueur'
+            elif Choix2 == ordi1:
+                ResultVote2 = 'Ordi1'
+            elif Choix2 == ordi2:
+                ResultVote2 = 'Ordi2'
+            elif Choix2 == ordi3:
+                ResultVote2 = 'Ordi3'
+            elif Choix2 == ordi4:
+                ResultVote2 = 'Ordi4'
+            elif Choix2 == ordi5:
+                ResultVote2 = 'Ordi5'
             Ligne = float(Chat.index('end'))-1.0
-            Chat.insert(END, "Ordi2 : Je vote contre toi" +""+", je sais que tu es un Loup !!!\n")
+            Chat.insert(END, "Ordi2 : Je vote contre toi " +ResultVote2+", je sais que tu es un Loup !!!\n")
             Chat.tag_add("Ordi2", Ligne, Ligne + 0.7)
             Chat.tag_config("Ordi2", foreground="#FF8000", font=("Arial", 12, "bold")) 
-            Vote(Choix)
-            Chat.insert(END, "Ordi2 vote contre"+"\n")
+            Vote(Choix2)
+            Chat.insert(END, "Ordi2 vote contre "+ResultVote2+".\n\n")
             Chat.yview()
             
         if ordi3 in PlayerList:
-            Choice = random.choice(PlayerList)
+            Choix3 = ordi3
+            while Choix3 == ordi3:
+                Choix3 = random.choice(PlayerList)
+                
+            if Choix3 == Joueur:
+                ResultVote3 = 'Joueur'
+            elif Choix3 == ordi1:
+                ResultVote3 = 'Ordi1'
+            elif Choix3 == ordi2:
+                ResultVote3 = 'Ordi2'
+            elif Choix3 == ordi3:
+                ResultVote3 = 'Ordi3'
+            elif Choix3 == ordi4:
+                ResultVote3 = 'Ordi4'
+            elif Choix3== ordi5:
+                ResultVote3 = 'Ordi5'
             Ligne = float(Chat.index('end'))-1.0
-            Chat.insert(END, "Ordi3 : J'ai des gros doutes. Je te vote"+""+".\n")
+            Chat.insert(END, "Ordi3 : J'ai des gros doutes. Je te vote " +ResultVote3+".\n")
             Chat.tag_add("Ordi3", Ligne, Ligne + 0.7)
             Chat.tag_config("Ordi3", foreground="#FF8000", font=("Arial", 12, "bold")) 
-            Vote(Choice)
-            Chat.insert(END, "Ordi3 vote contre"+"\n")
+            Vote(Choix3)
+            Chat.insert(END, "Ordi3 vote contre "+ResultVote3+".\n\n")
             Chat.yview()
             
         if ordi4 in PlayerList:
-            Choice = random.choice(PlayerList)
+            Choix4 = ordi4
+            while Choix4 == ordi4:
+                Choix4 = random.choice(PlayerList)
+                
+            if Choix4 == Joueur:
+                ResultVote4 = 'Joueur'
+            elif Choix4 == ordi1:
+                ResultVote4 = 'Ordi1'
+            elif Choix4 == ordi2:
+                ResultVote4 = 'Ordi2'
+            elif Choix4 == ordi3:
+                ResultVote4 = 'Ordi3'
+            elif Choix4 == ordi4:
+                ResultVote4 = 'Ordi4'
+            elif Choix4 == ordi5:
+                ResultVote4 = 'Ordi5'
             Ligne = float(Chat.index('end'))-1.0
-            Chat.insert(END, "Ordi4 : Votez" +""+", il est très suspect !!!!\n")
+            Chat.insert(END, "Ordi4 : Votez " +ResultVote4+", il est très suspect !!!!\n")
             Chat.tag_add("Ordi4", Ligne, Ligne + 0.7)
             Chat.tag_config("Ordi4", foreground="#FF8000", font=("Arial", 12, "bold")) 
-            Vote(Choice)
-            Chat.insert(END, "Ordi4 vote contre"+"\n")
+            Vote(Choix4)
+            Chat.insert(END, "Ordi4 vote contre "+ResultVote4+".\n\n")
             Chat.yview()
             
         if ordi5 in PlayerList:
-            Choice = random.choice(PlayerList)
+            Choix5 = ordi5
+            while Choix5 == ordi5:
+                Choix5 = random.choice(PlayerList)
+                
+            if Choix5 == Joueur:
+                ResultVote5 = 'Joueur'
+            elif Choix5 == ordi1:
+                ResultVote5 = 'Ordi1'
+            elif Choix5 == ordi2:
+                ResultVote5 = 'Ordi2'
+            elif Choix5 == ordi3:
+                ResultVote5 = 'Ordi3'
+            elif Choix5 == ordi4:
+                ResultVote5 = 'Ordi4'
+            elif Choix5 == ordi5:
+                ResultVote5 = 'Ordi5'
             Ligne = float(Chat.index('end'))-1.0
-            Chat.insert(END, "Ordi5 : Obligé que " +""+", est un Loup...\n")
+            Chat.insert(END, "Ordi5 : C'est obligé que " +ResultVote5+", est un Loup...\n")
             Chat.tag_add("Ordi5", Ligne, Ligne + 0.7)
             Chat.tag_config("Ordi5", foreground="#FF8000", font=("Arial", 12, "bold")) 
-            Vote(Choice)
-            Chat.insert(END, "Ordi5 vote contre"+"\n")
+            Vote(Choix5)
+            Chat.insert(END, "Ordi5 vote contre "+ResultVote5+".\n\n")
             Chat.yview()
 
 
@@ -482,6 +579,8 @@ def StopChat(event):
 
 def Command(EntryText):
     global Cursed
+    if Joueur not in PlayerList:
+        EntryText == ''
     if EntryText != None: #Si le texte n'est vide
         if EntryText[0] == '.': #Si le texte commence par un point, on le considère comme une commande (si elle existe)
             
@@ -713,7 +812,6 @@ def Vote(Target):
 
 def Kill(Target):
     global JoueurIsProtect, Ordi1IsProtect, Ordi2IsProtect, Ordi3IsProtect, Ordi4IsProtect, Ordi5IsProtect
-    print(Target)
     if Target in PlayerList:
         if Target == Joueur or Target == 'Joueur':
             if JoueurIsProtect != True:
@@ -913,7 +1011,7 @@ un vote au levé du jour.
 Bon jeu et... Bonne chance !"""
 
 
-Death = "[Privé] Vous êtes mort."
+Death = "[Privé] Vous êtes mort, vous pouvez toujours observer la fin de la partie."
 
 
 ActionLG = "Les loups vont décider d'une victime à éliminer."
