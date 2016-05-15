@@ -285,10 +285,20 @@ def TimerNuit():
                         PlayerBox.config(state = DISABLED)
                         
                     Chat.tag_add("ChassouText", Ligne, Ligne + 0.61)
-                    Chat.tag_config("ChassouText", foreground="#008000", font=("Arial", 14, "bold")) 
+                    Chat.tag_config("ChassouText", foreground="#008000", font=("Arial", 14, "bold"))
                 AlreadyPlayedChassou = True
-            
 
+                
+            
+        if 'LoupGarou1' not in PlayerList and 'LoupGarou2' not in PlayerList:
+            Ligne = float(Chat.index('end'))-1.0
+            Chat.insert(END, GgVillage + "\n")
+            Chat.tag_add("Ordi1", Ligne, Ligne + 0.77)
+            Chat.tag_config("Ordi1", foreground="#008000", font=("Arial", 20, "bold"))
+            Chat.insert(END, "Vous pouvez relancer une partie en redémarrant le programme." + "\n")
+            return ''
+
+        
 
         Chat.insert(END, InfoVote + '\n' + '\n')
         
@@ -490,10 +500,11 @@ def Command(EntryText):
                     if Chat.index('end') != None:
                         Ligne = float(Chat.index('end'))-1.0 # On définit la position du message
                         Chat.insert(END, VotedMessage + '\n') #On l'insert dans le Chat
-                        Chat.tag_add('Voted', Ligne, Ligne + 0.22) #On le repère avec Ligne (position)
+                        Chat.tag_add('Voted', Ligne, Ligne + 0.77) #On le repère avec Ligne (position)
                         Chat.tag_config('Voted', foreground="#713070", font=("Arial", 15, "bold")) #On lui donne une couleur, taille
                         Chat.config(state=DISABLED)#Et on 'ferme' le chat
                         Chat.yview(END)
+                        EntryText = ''
             #Fin du Message Chat
 
                 else: #Sinon, on ne revoie rien
