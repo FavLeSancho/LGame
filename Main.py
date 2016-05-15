@@ -207,8 +207,8 @@ def TimerNuit():
         if 'Corbeau' in PlayerList:
             Ligne = float(Chat.index('end'))-1.0
             Chat.insert(END, "Le corbeau a posé sa malédiction sur "+ InfoCursed +"..."+ '\n' + '\n')
-            Chat.tag_add("CorbeauCurse", Ligne, Ligne + 0.42)
-            Chat.tag_config("CorbeauCurse", foreground="#0000ff", font=("Arial", 12, "bold"))  
+            Chat.tag_add("CorbeauCurse", Ligne, Ligne + 0.44)
+            Chat.tag_config("CorbeauCurse", foreground="#0000ff", font=("Arial", 12, "bold")) 
         
         
         
@@ -498,12 +498,14 @@ def TimerJour():
         Chat.config(state = NORMAL)
         if JoueurIsVoted > Ordi1IsVoted and JoueurIsVoted > Ordi2IsVoted and JoueurIsVoted > Ordi3IsVoted and JoueurIsVoted > Ordi4IsVoted and JoueurIsVoted > Ordi5IsVoted:
             PlayerList.remove(Joueur)
+            InfoList.remove('Joueur')
             PlayerBox.config(state = NORMAL)
             PlayerBox.delete("2.0", "2.11")
             PlayerBox.config(state = DISABLED)
             Chat.insert(END, "Le village a décidé d'éliminer Joueur qui était " + Joueur + ".\n")
         elif Ordi1IsVoted > JoueurIsVoted and Ordi1IsVoted > Ordi2IsVoted and Ordi1IsVoted > Ordi3IsVoted and Ordi1IsVoted > Ordi4IsVoted and Ordi1IsVoted > Ordi5IsVoted:
             PlayerList.remove(ordi1)
+            InfoList.remove('ordi1')
             PlayerBox.config(state = NORMAL)
             PlayerBox.delete("3.0", "3.11")
             PlayerBox.config(state = DISABLED)
@@ -511,6 +513,7 @@ def TimerJour():
 
         elif Ordi2IsVoted > JoueurIsVoted and Ordi2IsVoted > Ordi1IsVoted and Ordi2IsVoted > Ordi3IsVoted and Ordi2IsVoted > Ordi4IsVoted and Ordi2IsVoted > Ordi5IsVoted:
             PlayerList.remove(ordi2)
+            InfoList.remove('ordi2')
             PlayerBox.config(state = NORMAL)
             PlayerBox.delete("4.0", "4.11")
             PlayerBox.config(state = DISABLED)
@@ -518,6 +521,7 @@ def TimerJour():
 
         elif Ordi3IsVoted > JoueurIsVoted and Ordi3IsVoted > Ordi1IsVoted and Ordi3IsVoted > Ordi2IsVoted and Ordi3IsVoted > Ordi4IsVoted and Ordi3IsVoted > Ordi5IsVoted:
             PlayerList.remove(ordi3)
+            InfoList.remove('ordi3')
             PlayerBox.config(state = NORMAL)
             PlayerBox.delete("5.0", "5.11")
             PlayerBox.config(state = DISABLED)
@@ -525,6 +529,7 @@ def TimerJour():
 
         elif Ordi4IsVoted > JoueurIsVoted and Ordi4IsVoted > Ordi1IsVoted and Ordi4IsVoted > Ordi2IsVoted and Ordi4IsVoted > Ordi3IsVoted and Ordi4IsVoted > Ordi5IsVoted:
             PlayerList.remove(ordi4)
+            InfoList.remove('ordi4')
             PlayerBox.config(state = NORMAL)
             PlayerBox.delete("6.0", "6.11")
             PlayerBox.config(state = DISABLED)
@@ -532,6 +537,7 @@ def TimerJour():
 
         elif Ordi5IsVoted > JoueurIsVoted and Ordi5IsVoted > Ordi1IsVoted and Ordi5IsVoted > Ordi2IsVoted and Ordi5IsVoted > Ordi3IsVoted and Ordi5IsVoted > Ordi4IsVoted:
             PlayerList.remove(ordi5)
+            InfoList.remove('ordi5')
             PlayerBox.config(state = NORMAL)
             PlayerBox.delete("7.0", "7.11")
             PlayerBox.config(state = DISABLED)
@@ -649,31 +655,41 @@ def Command(EntryText):
 
             elif EntryText[:6] == '.kill ':#Commande .kill
                 if Joueur == 'LoupGarou1' or Joueur == 'LoupGarou2':
+                    print('L1')
                     if isJour == True:
+                        print('L2')
                         EntryText = ''
                     if CanPlayLG == False:
+                        print('L3')
                         EntryText = ''
 
-                    if Joueur not in PlayerList:
+                    if Joueur in PlayerList:
+                        print('L4')
                         EntryText = EntryText.replace("\n", '') 
                         EntryText = EntryText.replace(".kill ", '')
+                        print(EntryText)
+                        print(InfoList)
                         if EntryText in InfoList:
+                            print('L5')
                             if AlreadyPlayedLG != True:
+                                print('L6')
                                 Kill(EntryText)
 
-                                KillMessage = "Vous avez décidé de tuer " + EntryText + '.\n Il ne se reveillera pas demain. \n'
+                                KillMessage = "Vous avez décidé de tuer " + EntryText + '.\n'+'Il ne se reveillera pas demain. \n'
                                 Chat.config(state=NORMAL)
                                 if Chat.index('end') != None:
                                     Ligne = float(Chat.index('end'))-1.0 # On définit la position du message
                                     Chat.insert(END, KillMessage + '\n') #On l'insert dans le Chat
-                                    Chat.tag_add('Killed', Ligne, Ligne + 0.100) #On le repère avec Ligne (position)
+                                    Chat.tag_add('Killed', Ligne, Ligne + 0.99) #On le repère avec Ligne (position)
                                     Chat.tag_config('Killed', foreground="#ED0000", font=("Arial", 12, "bold")) #On lui donne une couleur, taille
                                     Chat.config(state=DISABLED)#Et on 'ferme' le chat
                                     Chat.yview(END)
-
+                            
                         else:
+                            print('L7')
                             EntryText = ''
                     else:
+                        print('L8')
                         EntryText = ''
 
             elif EntryText[:9] == '.revenge ':#Commande .revenge (chasseur)
@@ -819,16 +835,22 @@ def Command(EntryText):
 def Shield(Target):
     global JoueurIsProtect, Ordi1IsProtect, Ordi2IsProtect, Ordi3IsProtect, Ordi4IsProtect, Ordi5IsProtect
     if Target == Joueur or Target == 'Joueur':
+        print('Joueur')
         JoueurIsProtect = True
     elif Target == ordi1 or Target == 'ordi1':
+        print('Ordi1')
         Ordi1IsProtect = True
     elif Target == ordi2 or Target == 'ordi2':
+        print('Ordi2')
         Ordi2IsProtect = True
     elif Target == ordi3 or Target == 'ordi3':
+        print('Ordi3')
         Ordi3IsProtect = True
     elif Target == ordi4 or Target == 'ordi4':
+        print('Ordi4')
         Ordi4IsProtect = True
     elif Target == ordi5 or Target == 'ordi5':
+        print('Ordi5')
         Ordi5IsProtect = True
     
 
@@ -966,7 +988,7 @@ FondNuit = PhotoImage(file ='FondNuit.gif')
 RoleList = ['LoupGarou1','LoupGarou2','Salvateur','Sorciere','Chasseur', 'Corbeau']
 InfoList = ['Joueur', 'ordi1', 'ordi2', 'ordi3', 'ordi4','ordi5']
 
-Joueur = 'LoupGarou1' #random.choice(RoleList)
+Joueur = random.choice(RoleList)
 RoleList.remove(Joueur)
     #------------#
 ordi1 = random.choice(RoleList)
