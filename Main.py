@@ -487,7 +487,7 @@ def TimerNuit():
         
 
 def TimerJour():
-    global secJour, isJour
+    global secJour, isJour, AlreadyPlayedChassou
     BackGround.create_image(400, 230, image=FondJour)
     if secJour != 0:
         isJour = True
