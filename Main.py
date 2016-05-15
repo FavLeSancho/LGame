@@ -547,6 +547,63 @@ def TimerJour():
         else:
            Chat.insert(END, "Le village n'arrivant pas à se décider, la nuit tombe sur Thiercelieux." + '\n')
 
+        if 'Chasseur' not in PlayerList:
+            if AlreadyPlayedChassou != True:
+                Chat.config(state = NORMAL)
+            
+                Ligne = float(Chat.index('end'))-1.0
+                Chat.insert(END, ChoixChassou + '\n')
+                Chat.tag_add("ChassouText", Ligne, Ligne + 0.61)
+                Chat.tag_config("ChassouText", foreground="#008000", font=("Arial", 12, "bold")) 
+                if Joueur == 'Chasseur':
+                    CanPlayChassou = True
+                    Chat.insert(END, '[Privé] Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
+                    time.sleep(10)
+                else:
+                    random.shuffle(PlayerList)
+                    Killed = random.choice(PlayerList)
+                    Kill(Killed)
+                    Ligne = float(Chat.index('end'))-1.0
+                    if Killed == Joueur:
+                        Chat.insert(END, "PAN ! Joueur"+"("+ Killed +") a été tué par le chasseur." + '\n')
+                        PlayerBox.config(state = NORMAL)
+                        PlayerBox.delete("2.0", "2.11")
+                        PlayerBox.config(state = DISABLED)
+
+                    elif Killed == ordi1:
+                        Chat.insert(END, "PAN ! Ordi1"+"("+ Killed +") a été tué par le chasseur." + '\n')
+                        PlayerBox.config(state = NORMAL)
+                        PlayerBox.delete("3.0", "3.11")
+                        PlayerBox.config(state = DISABLED)
+
+                    elif Killed == ordi2:
+                        Chat.insert(END, "PAN ! Ordi2"+"("+ Killed +") a été tué par le chasseur." + '\n')
+                        PlayerBox.config(state = NORMAL)
+                        PlayerBox.delete("4.0", "4.11")
+                        PlayerBox.config(state = DISABLED)
+
+                    elif Killed == ordi3:
+                        Chat.insert(END, "PAN ! Ordi3"+"("+ Killed +") a été tué par le chasseur." + '\n')
+                        PlayerBox.config(state = NORMAL)
+                        PlayerBox.delete("5.0", "5.11")
+                        PlayerBox.config(state = DISABLED)
+
+                    elif Killed == ordi4:
+                        Chat.insert(END, "PAN ! Ordi4"+"("+ Killed +") a été tué par le chasseur." + '\n')
+                        PlayerBox.config(state = NORMAL)
+                        PlayerBox.delete("6.0", "6.11")
+                        PlayerBox.config(state = DISABLED)
+
+                    else:
+                        Chat.insert(END, "PAN ! Ordi5"+"("+ Killed +") a été tué par le chasseur." + '\n')
+                        PlayerBox.config(state = NORMAL)
+                        PlayerBox.delete("7.0", "7.11")
+                        PlayerBox.config(state = DISABLED)
+                        
+                    Chat.tag_add("ChassouText", Ligne, Ligne + 0.61)
+                    Chat.tag_config("ChassouText", foreground="#008000", font=("Arial", 14, "bold"))
+                AlreadyPlayedChassou = True
+
         if 'Chasseur' not in PlayerList and 'Salvateur' not in PlayerList and 'Sorciere' not in PlayerList and 'Corbeau' not in PlayerList:
             Ligne = float(Chat.index('end'))-1.0
             Chat.insert(END, GgLg + "\n")
@@ -624,8 +681,6 @@ def StopChat(event):
 
 def Command(EntryText):
     global Cursed
-    if Joueur not in PlayerList:
-        EntryText == ''
     if EntryText != None: #Si le texte n'est vide
         if EntryText[0] == '.': #Si le texte commence par un point, on le considère comme une commande (si elle existe)
             
@@ -633,24 +688,27 @@ def Command(EntryText):
             if EntryText[:6] == '.vote ':#Commande .vote
                 if isNuit == True:
                     EntryText = ''
-                EntryText = EntryText.replace("\n", '') #On enlève le retour à la ligne (fixage de bugs)
-                EntryText = EntryText.replace(".vote ", '') #On enlève le '.vote ' pour ne reccuperer que le pseudo
-                if EntryText in InfoList: #Si le pseudo fait partie de la liste de Joueurs
-                    Vote(EntryText)
+                if Joueur in PlayerList:
+                    EntryText = EntryText.replace("\n", '') #On enlève le retour à la ligne (fixage de bugs)
+                    EntryText = EntryText.replace(".vote ", '') #On enlève le '.vote ' pour ne reccuperer que le pseudo
+                    if EntryText in InfoList: #Si le pseudo fait partie de la liste de Joueurs
+                        Vote(EntryText)
                     
-            #Début du message Chat
-                    VotedMessage = "Vous avez voté contre " + EntryText + '. \n' #Le message à envoyer
-                    Chat.config(state=NORMAL) # On 'ouvre' le chat
-                    if Chat.index('end') != None:
-                        Ligne = float(Chat.index('end'))-1.0 # On définit la position du message
-                        Chat.insert(END, VotedMessage + '\n') #On l'insert dans le Chat
-                        Chat.tag_add('Voted', Ligne, Ligne + 0.77) #On le repère avec Ligne (position)
-                        Chat.tag_config('Voted', foreground="#713070", font=("Arial", 15, "bold")) #On lui donne une couleur, taille
-                        Chat.config(state=DISABLED)#Et on 'ferme' le chat
-                        Chat.yview(END)
-                        EntryText = ''
-            #Fin du Message Chat
+                #Début du message Chat
+                        VotedMessage = "Vous avez voté contre " + EntryText + '. \n' #Le message à envoyer
+                        Chat.config(state=NORMAL) # On 'ouvre' le chat
+                        if Chat.index('end') != None:
+                            Ligne = float(Chat.index('end'))-1.0 # On définit la position du message
+                            Chat.insert(END, VotedMessage + '\n') #On l'insert dans le Chat
+                            Chat.tag_add('Voted', Ligne, Ligne + 0.77) #On le repère avec Ligne (position)
+                            Chat.tag_config('Voted', foreground="#713070", font=("Arial", 15, "bold")) #On lui donne une couleur, taille
+                            Chat.config(state=DISABLED)#Et on 'ferme' le chat
+                            Chat.yview(END)
+                            EntryText = ''
+                   #Fin du Message Chat
 
+                    else: #Sinon, on ne revoie rien
+                        EntryText = ''
                 else: #Sinon, on ne revoie rien
                     EntryText = ''
 
