@@ -487,7 +487,7 @@ def TimerNuit():
         
 
 def TimerJour():
-    global secJour, isJour, AlreadyPlayedChassou
+    global secJour, isJour, AlreadyPlayedChassou, JoueurIsVoted, Ordi1IsVoted, Ordi2IsVoted, Ordi3IsVoted, Ordi4IsVoted, Ordi5IsVoted
     BackGround.create_image(400, 230, image=FondJour)
     if secJour != 0:
         isJour = True
@@ -619,7 +619,14 @@ def TimerJour():
             Chat.tag_config("VillageEnd", foreground="#008000", font=("Arial", 20, "bold"))
             Chat.insert(END, "Vous pouvez relancer une partie en redémarrant le programme." + "\n")
             return ''
-            
+
+        JoueurIsVoted = 0
+        Ordi1IsVoted = 0
+        Ordi2IsVoted = 0
+        Ordi3IsVoted = 0
+        Ordi4IsVoted = 0
+        Ordi5IsVoted = 0
+                
         TimerBox['text'] = ''
         isJour = False
         Chat.insert(END, "--------------------------------------------------------------------------------------------------------------" + '\n')
