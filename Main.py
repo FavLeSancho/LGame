@@ -743,23 +743,17 @@ def Command(EntryText):
                         EntryText = ''
 
             elif EntryText[:9] == '.revenge ':#Commande .revenge (chasseur)
-                print('L1')
                 if Joueur == 'Chasseur':
-                    print('L2')
                     if isJour == False:
                         EntryText = ''
-                        print('L3')
                     if Joueur in PlayerList:
-                        print('L4')
                         EntryText = ''
                     if CanPlayChassou == False:
                         EntryText = ''
-                        print('L5')
                     EntryText = EntryText.replace("\n", '') 
                     EntryText = EntryText.replace(".revenge ", '')
                     if EntryText in InfoList:
                         Kill(EntryText)
-                        print('L6')
                         CanPlayChassou == False
 
                         RevengeMessage = "Dans un élan d'éffort, vous tirez sur " + EntryText + '.'
@@ -774,10 +768,8 @@ def Command(EntryText):
                             EntryText = ''
                     else:
                         EntryText = ''
-                        print('L7')
                 else:
                     EntryText = ''
-                    print('L8')
                     
 
             elif EntryText[:7] == '.curse ':
@@ -926,50 +918,36 @@ def Vote(Target):
 
 def Kill(Target):
     global JoueurIsProtect, Ordi1IsProtect, Ordi2IsProtect, Ordi3IsProtect, Ordi4IsProtect, Ordi5IsProtect
-    print('K1')
     if Target in PlayerList or Target in InfoList :
-        print('K2')
         if Target == Joueur or Target == 'Joueur':
-            print('KJT')
             if JoueurIsProtect != True:
-                PlayerList.remove(Target)
+                PlayerList.remove(Joueur)
                 InfoList.remove('Joueur')
-                print('KJ')
 
         elif Target == ordi1 or Target == 'ordi1':
-            print('K01T')
             if Ordi1IsProtect != True:
-                PlayerList.remove(Target)
+                PlayerList.remove(ordi1)
                 InfoList.remove('ordi1')
-                print('KO1')
 
         elif Target == ordi2 or Target == 'ordi2':
-            print('K02T')
             if Ordi2IsProtect != True:
-                PlayerList.remove(Target)
+                PlayerList.remove(ordi2)
                 InfoList.remove('ordi2')
-                print('KO2')
 
         elif Target == ordi3 or Target == 'ordi3':
-            print('K03T')
             if Ordi3IsProtect != True:
-                PlayerList.remove(Target)
+                PlayerList.remove(ordi3)
                 InfoList.remove('ordi3')
-                print('KO3')
 
         elif Target == ordi4 or Target == 'ordi4':
-            print('K04T')
             if Ordi4IsProtect != True:
-                PlayerList.remove(Target)
+                PlayerList.remove(ordi4)
                 InfoList.remove('ordi4')
-                print('KO5')
 
         elif Target == ordi5 or Target == 'ordi5':
-            print('K05T')
             if Ordi5IsProtect != True:
-                PlayerList.remove(Target)
+                PlayerList.remove(ordi5)
                 InfoList.remove('ordi5')
-                print('KO5')
 
 
 
