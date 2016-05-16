@@ -6,6 +6,7 @@ import random
 def Main():
     Launcher.destroy() #Quand on clique, le bouton disparait
     Chat.config(state = NORMAL)
+    Chat.delete('0.0', END)
     Ligne = float(Chat.index('end'))-1.0
     Chat.insert(END, "Le jeu commence ! \n \n")
     Chat.tag_add("start", Ligne, Ligne + 0.17)
@@ -924,8 +925,36 @@ BackGround.pack()
 
 #Fenêtre du Chat
 Chat = Text(root, bd=0, bg="white", height="8", width="50", font="Arial") #Customisation de la fenêtre de chat
-Chat.insert(END, "Bienvenue à cette partie de Loup Garous !\n") #On insère du texte
-Chat.config(state=DISABLED) #Une fenêtre où ne peut pas écrire, sinon wtf
+Chat.insert(END, "Bienvenue à cette partie de Loup Garous !\n")
+Ligne = float(Chat.index('end'))-1.0 
+Chat.insert(END, """Quelques informations :
+- Le jeu se passe rapidement, il faut lire les informations données et donc réagir
+pour entrer une commande.
+
+- Pour rentrer une commande telle que " .vote nom " le nom de la personne doit etre
+tout en minuscule (ex : .vote ordi2).
+
+- A savoir sur les règles :
+    Le corbeau peut 'maudire' une personne en lui attribuant un vote d'office
+    avec la commande '.curse + nom'.
+    
+    La Sorcière peut utiliser sa potion de mort pour éliminer une personne,
+    avec la commande '.poison + nom'.
+    
+    Le Salvateur peut proteger une personne pendant une nuit
+    avec la commande '.protect + nom'
+    
+    Les Loups Garous peuvent tuer une personne par nuit
+    avec la commande '.kill + nom'.
+    
+    Le Chasseur peut se venger et tuer une personne si il a été tué
+    la nuit précédente, avec la commande '.revenge + nom'.
+
+Bonne chance pour survivre et faire gagner votre camp,
+et puisse la chance vous etre favorable !""")
+Chat.tag_add('Voted', Ligne, Ligne + 99.77) 
+Chat.tag_config('Voted', foreground="#008000", font=("Arial", 13, "bold")) 
+Chat.config(state=DISABLED) 
 
 #Fenetre Image
 PictureBox = Canvas(root, width=200, height=200)
