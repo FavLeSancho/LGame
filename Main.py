@@ -954,7 +954,7 @@ tout en minuscule (ex : .vote ordi2).
 Bonne chance pour survivre et faire gagner votre camp,
 et puisse la chance vous etre favorable !""")
 Chat.tag_add('Voted', Ligne, Ligne + 99.77) 
-Chat.tag_config('Voted', foreground="#008000", font=("Arial", 13, "bold")) 
+Chat.tag_config('Voted', foreground="#008000", font=("Arial", 10, "bold")) 
 Chat.config(state=DISABLED) 
 
 #Fenetre Image
