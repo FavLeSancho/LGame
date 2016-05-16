@@ -72,7 +72,7 @@ vous mourrez.""" + '\n')
         
     
 def TimerNuit():
-    global InfoCursed, JoueurIsProtect, Ordi1IsProtect, Ordi2IsProtect, Ordi3IsProtect, Ordi4IsProtect, Ordi5IsProtect, texte, secNuit, isNuit, CanPlayLG, CanPlaySoso, CanPlaySalva, CanPlayCorbac, CanPlayChassou, AlreadyPlayedSalva, AlreadyPlayedCorbac, AlreadyPlayedSoso, AlreadyPlayedChassou, finish
+    global AlreadyVoted, InfoCursed, JoueurIsProtect, Ordi1IsProtect, Ordi2IsProtect, Ordi3IsProtect, Ordi4IsProtect, Ordi5IsProtect, texte, secNuit, isNuit, CanPlayLG, CanPlaySoso, CanPlaySalva, CanPlayCorbac, CanPlayChassou, AlreadyPlayedSalva, AlreadyPlayedCorbac, AlreadyPlayedSoso, AlreadyPlayedChassou, finish
     BackGround.create_image(400, 230, image=FondNuit)
     
     if secNuit == 55:
@@ -194,6 +194,7 @@ def TimerNuit():
         AlreadyPlayedLG = False
         AlreadyPlayedSalva = False
         AlreadyPlayedCorbac = False
+        AlreadyVoted = False
 
         JoueurIsProtect = False
         Ordi1IsProtect = False
