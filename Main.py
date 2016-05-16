@@ -18,7 +18,7 @@ def Main():
     PlayerBox.config(state = DISABLED)
 
     
-
+    #Message si le joueur est Loup Garou
     if Joueur == 'LoupGarou1' or Joueur == 'LoupGarou2':
         PictureBox.create_image(75, 75, image=ImgLoupGarou)
         Chat.insert(END, RoleLG + '\n')
@@ -45,7 +45,7 @@ def Main():
             Chat.tag_add("LgFriend", Ligne, Ligne + 0.77)
             Chat.tag_config("LgFriend", foreground="#0000ff", font=("Arial", 12))
 
-        
+    #Atribution de l'image en fonction du Role (+ des explications sur les commandes)
     elif Joueur == 'Chasseur':
         PictureBox.create_image(75, 75, image=ImgChasseur)
         Chat.insert(END, RoleChassou + '\n')
@@ -74,7 +74,9 @@ vous mourrez.""" + '\n')
 def TimerNuit():
     global AlreadyVoted, InfoCursed, JoueurIsProtect, Ordi1IsProtect, Ordi2IsProtect, Ordi3IsProtect, Ordi4IsProtect, Ordi5IsProtect, texte, secNuit, isNuit, CanPlayLG, CanPlaySoso, CanPlaySalva, CanPlayCorbac, CanPlayChassou, AlreadyPlayedSalva, AlreadyPlayedCorbac, AlreadyPlayedSoso, AlreadyPlayedChassou, finish
     BackGround.create_image(400, 230, image=FondNuit)
-    
+
+    #Gestion des messages la nuit + roles ordinateurs
+    #Salvateur
     if secNuit == 55:
         if 'Salvateur' in PlayerList:
             Chat.config(state = NORMAL)
@@ -94,6 +96,7 @@ def TimerNuit():
             Chat.yview()
             Chat.config(state = DISABLED)
 
+    #Loups
     if secNuit == 40:
         Chat.config(state = NORMAL)
         Ligne = float(Chat.index('end'))-1.0
@@ -118,7 +121,7 @@ def TimerNuit():
         Chat.yview()
         Chat.config(state = DISABLED)
         
-
+    #Sorciere
     if secNuit == 30:
         if AlreadyPlayedSoso != True:
             Chat.config(state = NORMAL)
@@ -145,7 +148,7 @@ def TimerNuit():
             Chat.yview()
             Chat.config(state = DISABLED)
             
-
+    #Corbeau
     if secNuit == 15:
         if 'Corbeau' in PlayerList:
             Chat.config(state = NORMAL)
@@ -184,6 +187,7 @@ def TimerNuit():
     
 
     # Ordre : ActionSalva / ActionLG / ActionSoso / ActionCorbeau
+    #Ici le timer relance la fonction chaque 1000 ms (1sec)
     if secNuit != 0:
         isNuit = True
         secNuit -= 1
@@ -191,6 +195,7 @@ def TimerNuit():
         TimerBox.after(1000, TimerNuit)
         
     elif secNuit == 0:
+        #On reinitialise toutes les variables 
         AlreadyPlayedLG = False
         AlreadyPlayedSalva = False
         AlreadyPlayedCorbac = False
@@ -206,6 +211,7 @@ def TimerNuit():
         Chat.config(state = NORMAL)
         Chat.insert(END, "--------------------------------------------------------------------------------------------------------------" + '\n')
         Chat.insert(END, "Le jour se lève sur le village de Thiercelieux..."+ '\n')
+        #Message de malediction du corbeau
         if 'Corbeau' in PlayerList:
             if InfoCursed != '':
                 Ligne = float(Chat.index('end'))-1.0
@@ -214,7 +220,7 @@ def TimerNuit():
                 Chat.tag_config("CorbeauCurse", foreground="#0000ff", font=("Arial", 12, "bold")) 
         
         
-        
+        #Affichage des morts
         Chat.insert(END, DeadList)
         if Joueur not in PlayerList:
             Chat.insert(END, "- Joueur" + "(" + Joueur + ")" +'\n' +'\n')
@@ -258,13 +264,14 @@ def TimerNuit():
             Chat.tag_add("NobodyDied", Ligne, Ligne + 0.31)
             Chat.tag_config("NobodyDied", foreground="#008000", font=("Arial", 14, "bold")) 
 
+        #Message si le joueur meurt.
         if Joueur not in PlayerList:
             Ligne = float(Chat.index('end'))-1.0
             Chat.insert(END, Death +'\n')
-            Chat.tag_add("NobodyDied", Ligne, Ligne + 0.99)
-            Chat.tag_config("NobodyDied", foreground="#0000ff", font=("Arial", 12, "bold")) 
+            Chat.tag_add("JoueurDied", Ligne, Ligne + 0.99)
+            Chat.tag_config("JoueurDied", foreground="#0000ff", font=("Arial", 12, "bold")) 
             
-
+        #Si le Chasseur est mort, on lui permet de tuer quelqu'un
         if 'Chasseur' not in PlayerList:
             if AlreadyPlayedChassou != True:
                 Chat.config(state = NORMAL)
@@ -277,6 +284,7 @@ def TimerNuit():
                     CanPlayChassou = True
                     Chat.insert(END, '[Privé] Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
                 else:
+                    #Automatisme (si le joueur n'est pas un chasseur, l'ordi s'en charge)
                     random.shuffle(PlayerList)
                     Killed = random.choice(PlayerList)
                     Kill(Killed)
@@ -322,7 +330,8 @@ def TimerNuit():
                 AlreadyPlayedChassou = True
 
 
-
+        #Gestion des messages de fin de jeu :
+        #Tout le monde est mort
         if 'Chasseur' not in PlayerList and 'Salvateur' not in PlayerList and 'Sorciere' not in PlayerList and 'Corbeau' not in PlayerList and 'LoupGarou1' not in PlayerList and 'LoupGarou2' not in PlayerList:
             Ligne = float(Chat.index('end'))-1.0
             Chat.insert(END, RipAll + "\n")
@@ -330,7 +339,8 @@ def TimerNuit():
             Chat.tag_config("Ordi1", foreground="#008000", font=("Arial", 20, "bold"))
             Chat.insert(END, "Vous pouvez relancer une partie en redémarrant le programme." + "\n")
             return ''
-            
+
+        #Les villageois ont gagné
         elif 'LoupGarou1' not in PlayerList and 'LoupGarou2' not in PlayerList:
             Ligne = float(Chat.index('end'))-1.0
             Chat.insert(END, GgVillage + "\n")
@@ -339,6 +349,7 @@ def TimerNuit():
             Chat.insert(END, "Vous pouvez relancer une partie en redémarrant le programme." + "\n")
             return ''
 
+        #Les loups ont gagné
         elif 'Chasseur' not in PlayerList and 'Salvateur' not in PlayerList and 'Sorciere' not in PlayerList and 'Corbeau' not in PlayerList:
             Ligne = float(Chat.index('end'))-1.0
             Chat.insert(END, GgLg + "\n")
@@ -351,7 +362,7 @@ def TimerNuit():
         
 
         Chat.insert(END, InfoVote + '\n' + '\n')
-        
+        #Gestion des votes automatiques par les ordis
         if ordi1 in PlayerList:
             Choix1 = ordi1
             while Choix1 == ordi1:
@@ -481,7 +492,7 @@ def TimerNuit():
         Chat.config(state = DISABLED)
         Chat.yview(END)
 
-            
+        #On lance TimerJour
         TimerBox['text'] = ''
         isNuit = False
         TimerJour()
@@ -550,7 +561,7 @@ def TimerJour():
            Chat.insert(END, "Le village n'arrivant pas à se décider, la nuit tombe sur Thiercelieux." + '\n')
 
         
-
+        #Gestion des fins possibles
         if 'Chasseur' not in PlayerList and 'Salvateur' not in PlayerList and 'Sorciere' not in PlayerList and 'Corbeau' not in PlayerList:
             Ligne = float(Chat.index('end'))-1.0
             Chat.insert(END, GgLg + "\n")
@@ -567,6 +578,7 @@ def TimerJour():
             Chat.insert(END, "Vous pouvez relancer une partie en redémarrant le programme." + "\n")
             return ''
 
+        #On reinitialise les votes
         JoueurIsVoted = 0
         Ordi1IsVoted = 0
         Ordi2IsVoted = 0
@@ -583,6 +595,7 @@ def TimerJour():
         secJour += 60
 
 
+#Permet d'ajouter "Vous:" en couleur devant le message envoyé
 def FinalMessage(Chat, EntryText):
     if EntryText != '':
         Chat.config(state=NORMAL)
@@ -595,10 +608,10 @@ def FinalMessage(Chat, EntryText):
             Chat.yview(END)
 
 
-#A simplifier
-def Filtration(EntryText): #Permet de filtrer les messages (EntryText)
+#Permet de filtrer les messages (EntryText)
+def Filtration(EntryText): 
     DoneFilter = '' #On initialise la variable qu'on va renvoyer
-    for i in range(len(EntryText)-1,-1,-1): #On va regarder dans notre message (step = -1)
+    for i in range(len(EntryText)-1,-1,-1): #On va regarder dans notre message 
         if EntryText[i]!='\n': #Si le message n'est pas "vide"
             DoneFilter = EntryText[0:i+1] #On remplit la varible avec le message (i+1 = limite du message)
             break #Et on sort de la boucle for
@@ -612,7 +625,6 @@ def ClicAction():
     EntryText = Filtration(ChatBox.get("0.0",END))
     #Puis on l'envoie dans la fonction Command, pour regarder si il y a une éventuelle commande
     Command(EntryText)
-    #FinalMessage(Chat, EntryText)
     #Scroll du message
     Chat.yview(END)
     #Supprimer le message de la ChatBox après envoi
@@ -730,7 +742,7 @@ def Command(EntryText):
                     EntryText = ''
                     
 
-            elif EntryText[:7] == '.curse ':
+            elif EntryText[:7] == '.curse ': #Commande Curse (corbeau)
                 if Joueur == 'Corbeau':
                     if isJour == True:
                         EntryText = ''
@@ -762,7 +774,7 @@ def Command(EntryText):
                     EntryText = ''
 
 
-            elif EntryText[:9] == '.protect ':
+            elif EntryText[:9] == '.protect ':# Commande Protect(Salva)
                 if Joueur == 'Salvateur':
                     if isJour == True:
                         EntryText = ''
@@ -793,7 +805,7 @@ def Command(EntryText):
                     EntryText = ''
                     
 
-            elif EntryText[:8] == '.poison ':
+            elif EntryText[:8] == '.poison ': # Commande Poison(Sorciere)
                 if Joueur == 'Sorciere':
                     if isJour == True:
                         EntryText = ''
@@ -826,7 +838,7 @@ def Command(EntryText):
                     
                 
 
-
+            #Commande info, pour afficher la liste des joueurs (Developpeurs)
             if EntryText[:5] == '.info':
                 Chat.config(state = NORMAL)
                 Chat.insert(END, InfoList)
@@ -1023,7 +1035,7 @@ FondNuit = PhotoImage(file ='Ressources/FondNuit.gif')
 RoleList = ['LoupGarou1','LoupGarou2','Salvateur','Sorciere','Chasseur', 'Corbeau']
 InfoList = ['Joueur', 'ordi1', 'ordi2', 'ordi3', 'ordi4','ordi5']
 
-Joueur = 'LoupGarou1' #random.choice(RoleList)
+Joueur = random.choice(RoleList)
 RoleList.remove(Joueur)
     #------------#
 ordi1 = random.choice(RoleList)
@@ -1131,4 +1143,4 @@ Night = "La nuit tombe sur le village de Thiercelieux..."
 
 RipAll = "Tout le monde est mort !"
 GgLg = "Les LOUPS-GAROUS ont gagné !"
-GgVillage = "Les VILLAGEOIS ont gagné !
+GgVillage = "Les VILLAGEOIS ont gagné !"
