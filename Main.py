@@ -632,7 +632,7 @@ def StopChat(event):
 #---------------------------------------------------#
 
 def Command(EntryText):
-    global Cursed, AlreadyVoted
+    global Cursed, AlreadyVoted, CanPlayLG, CanPlayChassou, CanPlaySoso, CanPlaySalva, CanPlayCorbac
     if EntryText != None: #Si le texte n'est vide
         if EntryText[0] == '.': #Si le texte commence par un point, on le considère comme une commande (si elle existe)
             
@@ -681,6 +681,7 @@ def Command(EntryText):
                         if EntryText in InfoList:
                             if AlreadyPlayedLG != True:
                                 Kill(EntryText)
+                                CanPlayLG = False
 
                                 KillMessage = "Vous avez décidé de tuer " + EntryText + '.\n'+'Il ne se reveillera pas demain. \n'
                                 Chat.config(state=NORMAL)
@@ -709,7 +710,7 @@ def Command(EntryText):
                     EntryText = EntryText.replace(".revenge ", '')
                     if EntryText in InfoList:
                         Kill(EntryText)
-                        CanPlayChassou == False
+                        CanPlayChassou = False
 
                         RevengeMessage = "Dans un élan d'éffort, vous tirez sur " + EntryText + '.'
                         Chat.config(state=NORMAL)
@@ -739,6 +740,7 @@ def Command(EntryText):
                         if EntryText in InfoList:
                             Vote(EntryText)
                             Cursed = EntryText
+                            CanPlayCorbac = False
 
                             CurseMessage = "Vous maudissez " + EntryText+ ', il aura 1 vote au levé du jour.'
                             Chat.config(state=NORMAL)
@@ -769,6 +771,7 @@ def Command(EntryText):
                         EntryText = EntryText.replace(".protect ", '')
                         if EntryText in InfoList:
                             Shield(EntryText)
+                            CanPlaySalva = False
 
                             ProtectMessage = "Vous protégez " + EntryText+ ", il sera protégé de l'assaut des Loups-Garous."
                             Chat.config(state=NORMAL)
@@ -800,6 +803,7 @@ def Command(EntryText):
                         if EntryText in InfoList:
                             if AlreadyPlayedSoso != True:
                                 Kill(EntryText)
+                                CanPlaySoso = False
 
                                 PoisonMessage = "Vous empoisonnez " + EntryText + ", il ne se reveillera pas le lendemain."
                                 Chat.config(state=NORMAL)
@@ -989,7 +993,7 @@ FondNuit = PhotoImage(file ='FondNuit.gif')
 RoleList = ['LoupGarou1','LoupGarou2','Salvateur','Sorciere','Chasseur', 'Corbeau']
 InfoList = ['Joueur', 'ordi1', 'ordi2', 'ordi3', 'ordi4','ordi5']
 
-Joueur = 'Chasseur' #random.choice(RoleList)
+Joueur = 'LoupGarou1' #random.choice(RoleList)
 RoleList.remove(Joueur)
     #------------#
 ordi1 = random.choice(RoleList)
