@@ -487,7 +487,7 @@ def TimerNuit():
         
 
 def TimerJour():
-    global secJour, isJour, AlreadyPlayedChassou, JoueurIsVoted, Ordi1IsVoted, Ordi2IsVoted, Ordi3IsVoted, Ordi4IsVoted, Ordi5IsVoted
+    global secJour, isJour, JoueurIsVoted, Ordi1IsVoted, Ordi2IsVoted, Ordi3IsVoted, Ordi4IsVoted, Ordi5IsVoted
     BackGround.create_image(400, 230, image=FondJour)
     if secJour != 0:
         isJour = True
@@ -547,62 +547,7 @@ def TimerJour():
         else:
            Chat.insert(END, "Le village n'arrivant pas à se décider, la nuit tombe sur Thiercelieux." + '\n')
 
-        if 'Chasseur' not in PlayerList:
-            if AlreadyPlayedChassou != True:
-                Chat.config(state = NORMAL)
-            
-                Ligne = float(Chat.index('end'))-1.0
-                Chat.insert(END, ChoixChassou + '\n')
-                Chat.tag_add("ChassouText", Ligne, Ligne + 0.61)
-                Chat.tag_config("ChassouText", foreground="#008000", font=("Arial", 12, "bold")) 
-                if Joueur == 'Chasseur':
-                    CanPlayChassou = True
-                    Chat.insert(END, '[Privé] Vous disposez de 10 secondes pour entrer votre commande.' + '\n')
-                    
-                else:
-                    random.shuffle(PlayerList)
-                    Killed = random.choice(PlayerList)
-                    Kill(Killed)
-                    Ligne = float(Chat.index('end'))-1.0
-                    if Killed == Joueur:
-                        Chat.insert(END, "PAN ! Joueur"+"("+ Killed +") a été tué par le chasseur." + '\n')
-                        PlayerBox.config(state = NORMAL)
-                        PlayerBox.delete("2.0", "2.11")
-                        PlayerBox.config(state = DISABLED)
-
-                    elif Killed == ordi1:
-                        Chat.insert(END, "PAN ! Ordi1"+"("+ Killed +") a été tué par le chasseur." + '\n')
-                        PlayerBox.config(state = NORMAL)
-                        PlayerBox.delete("3.0", "3.11")
-                        PlayerBox.config(state = DISABLED)
-
-                    elif Killed == ordi2:
-                        Chat.insert(END, "PAN ! Ordi2"+"("+ Killed +") a été tué par le chasseur." + '\n')
-                        PlayerBox.config(state = NORMAL)
-                        PlayerBox.delete("4.0", "4.11")
-                        PlayerBox.config(state = DISABLED)
-
-                    elif Killed == ordi3:
-                        Chat.insert(END, "PAN ! Ordi3"+"("+ Killed +") a été tué par le chasseur." + '\n')
-                        PlayerBox.config(state = NORMAL)
-                        PlayerBox.delete("5.0", "5.11")
-                        PlayerBox.config(state = DISABLED)
-
-                    elif Killed == ordi4:
-                        Chat.insert(END, "PAN ! Ordi4"+"("+ Killed +") a été tué par le chasseur." + '\n')
-                        PlayerBox.config(state = NORMAL)
-                        PlayerBox.delete("6.0", "6.11")
-                        PlayerBox.config(state = DISABLED)
-
-                    else:
-                        Chat.insert(END, "PAN ! Ordi5"+"("+ Killed +") a été tué par le chasseur." + '\n')
-                        PlayerBox.config(state = NORMAL)
-                        PlayerBox.delete("7.0", "7.11")
-                        PlayerBox.config(state = DISABLED)
-                        
-                    Chat.tag_add("ChassouText", Ligne, Ligne + 0.61)
-                    Chat.tag_config("ChassouText", foreground="#008000", font=("Arial", 14, "bold"))
-                AlreadyPlayedChassou = True
+        
 
         if 'Chasseur' not in PlayerList and 'Salvateur' not in PlayerList and 'Sorciere' not in PlayerList and 'Corbeau' not in PlayerList:
             Ligne = float(Chat.index('end'))-1.0
