@@ -687,12 +687,14 @@ def StopChat(event):
 #---------------------------------------------------#
 
 def Command(EntryText):
-    global Cursed
+    global Cursed, AlreadyVoted
     if EntryText != None: #Si le texte n'est vide
         if EntryText[0] == '.': #Si le texte commence par un point, on le considère comme une commande (si elle existe)
             
             #Début des commandes#
             if EntryText[:6] == '.vote ':#Commande .vote
+                if AlreadyVoted == True:
+                    EntryText = ''
                 if isNuit == True:
                     EntryText = ''
                 if Joueur in PlayerList:
@@ -700,6 +702,7 @@ def Command(EntryText):
                     EntryText = EntryText.replace(".vote ", '') #On enlève le '.vote ' pour ne reccuperer que le pseudo
                     if EntryText in InfoList: #Si le pseudo fait partie de la liste de Joueurs
                         Vote(EntryText)
+                        AlreadyVoted = True
                     
                 #Début du message Chat
                         VotedMessage = "Vous avez voté contre " + EntryText + '. \n' #Le message à envoyer
@@ -1084,17 +1087,16 @@ Ordi5IsProtect = False
 
 CanPlayLG = False
 CanPlaySoso = False
-CanPlayCupi = False
 CanPlayChassou = False
 CanPlaySalva = False
 CanPlayCorbac = False
 
 AlreadyPlayedLG = False
 AlreadyPlayedSoso = False
-AlreadyPlayedCupi = False
 AlreadyPlayedChassou = False
 AlreadyPlayedSalva = False
 AlreadyPlayedCorbac = False
+AlreadyVoted = False
 finish = False
 InfoCursed = ''
 #---------------------------------------------------#
