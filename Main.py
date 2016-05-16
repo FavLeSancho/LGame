@@ -1007,13 +1007,13 @@ TimerBox.place(x= 655, y= 165)
 
 
 #Images
-ImgLoupGarou = PhotoImage(file ='lg.gif')
-ImgSalvateur = PhotoImage(file ='salva.gif')
-ImgCorbeau = PhotoImage(file ='corbac.gif')
-ImgChasseur = PhotoImage(file ='chassou.gif')
-ImgSorciere = PhotoImage(file ='soso.gif')
-FondJour = PhotoImage(file ='FondJour.gif')
-FondNuit = PhotoImage(file ='FondNuit.gif')
+ImgLoupGarou = PhotoImage(file ='Ressources/lg.gif')
+ImgSalvateur = PhotoImage(file ='Ressources/salva.gif')
+ImgCorbeau = PhotoImage(file ='Ressources/corbac.gif')
+ImgChasseur = PhotoImage(file ='Ressources/chassou.gif')
+ImgSorciere = PhotoImage(file ='Ressources/soso.gif')
+FondJour = PhotoImage(file ='Ressources/FondJour.gif')
+FondNuit = PhotoImage(file ='Ressources/FondNuit.gif')
 
 
 #---------------------------------------------------#
@@ -1131,4 +1131,4 @@ Night = "La nuit tombe sur le village de Thiercelieux..."
 
 RipAll = "Tout le monde est mort !"
 GgLg = "Les LOUPS-GAROUS ont gagné !"
-GgVillage = "Les VILLAGEOIS ont gagné !"
+GgVillage = "Les VILLAGEOIS ont gagné !
