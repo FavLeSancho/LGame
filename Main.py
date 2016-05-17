@@ -338,7 +338,6 @@ def TimerNuit():
             Chat.tag_add("RipAlle", Ligne, Ligne + 0.77)
             Chat.tag_config("RipAlle", foreground="#008000", font=("Arial", 20, "bold"))
             Chat.insert(END, "Vous pouvez relancer une partie en redémarrant le programme." + "\n")
-            Chat.yview()
             return ''
 
         #Les villageois ont gagné
@@ -348,7 +347,6 @@ def TimerNuit():
             Chat.tag_add("GgVillaj", Ligne, Ligne + 0.77)
             Chat.tag_config("GgVillaj", foreground="#008000", font=("Arial", 20, "bold"))
             Chat.insert(END, "Vous pouvez relancer une partie en redémarrant le programme." + "\n")
-            Chat.yview()
             return ''
 
         #Les loups ont gagné
@@ -358,7 +356,6 @@ def TimerNuit():
             Chat.tag_add("GgLge", Ligne, Ligne + 0.77)
             Chat.tag_config("GgLge", foreground="#008000", font=("Arial", 20, "bold"))
             Chat.insert(END, "Vous pouvez relancer une partie en redémarrant le programme." + "\n")
-            Chat.yview()
             return ''
         
 
