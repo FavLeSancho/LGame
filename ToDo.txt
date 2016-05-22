@@ -2,20 +2,19 @@ A faire :
 ---------
 
 Chat :
-[EN COURS] -Gestion des commandes générales (.def/.vote)
--Gestion du Narrateur
--Gestion des commandes appliquées aux rôles (.kill / .death≠.save / .love / .revenge)
+[FAIT] -Gestion des commandes générales (.def/.vote)
+[FAIT] -Gestion du Narrateur
+[FAIT] -Gestion des commandes appliquées aux rôles (.kill / .death≠.save / .love / .revenge)
 
 
 Interface :
 [FAIT] -Affichage du rôle du joueur (en haut à droite)
-[EN COURS]-Affichage des personnes connectées, et des joueurs morts
-[EN COURS]-Affichage du cycle Jour/Nuit (Jour = blanc / Nuit = Noir ?)
--Affichage des rôles possibles, ainsi que leur explication
+[FAIT]-Affichage des personnes connectées, et des joueurs morts
+[FAIT]-Affichage du cycle Jour/Nuit (Jour = blanc / Nuit = Noir ?)
 
 
 Programme : 
 [FAIT] -Gestion de l'algorithme d'attribution d'un rôle
 [FAIT] -Gestion du cycle Jour/Nuit (Nuit = actions des joueurs / Jour = vote, def)
-[EN COURS] -Gestion des timers (vote / nuit / jour / actions des joueurs)
--Gestion des IA des 'BotsJoueurs' (def, vote, actions pendant la nuit)
+[FAIT] -Gestion des timers (vote / nuit / jour / actions des joueurs)
+[FAIT] -Gestion des IA des 'BotsJoueurs' (def, vote, actions pendant la nuit)
